@@ -18,7 +18,7 @@
 
 \include{title/title}
 
-\section{Άσκηση 1η: Ασυμπτωτικός συμβολισμός,Αναδρομικές
+\section{Ασυμπτωτικός συμβολισμός, Αναδρομικές
 Σχέσεις} \setcounter{section}{1}
 \subsection{Ταξινόμηση}
 \begin{tabular}{l l}
@@ -44,11 +44,41 @@ $ \log{(n!)}$ & $\Rightarrow O(n*\log{n})$\\
 \subsection{Τάξη Μεγέθους}
 \begin{enumerate}
 \item $T(n)=5*T(n/7)+n*\log(n)$
-$\Rightarrow n^{\log _5 {7}} = n^{1.209}$\\
-$\Rightarrow n^{1.209} >_{πολ/κά} n*\log{n}$\\
-$T(n) \in \Theta(n^{1.209})$
+$\Rightarrow n^{\log _5 {7}} = n^{1.209}$
+$\Rightarrow n^{1.209} > n*\log{n}$\\
+$\Rightarrow T(n) \in \Theta(n^{1.209})$
+
+\item $T(n) = 4*T(n/5)+n/\log^2{n}$
+$\Rightarrow n^{\log_4 {5}} = n^{1.16}$
+$\Rightarrow n^{1.16} > n/\log^2{n}$\\
+$\Rightarrow T(n) \in \Theta(n^{1.16})$
+
+\item $T(n) = T(n/3) +3*T(n/7)+n$
+$\Rightarrow n^{\log 3}$
+
+\item $T(n) = 6*T(n/6)+n$
+$\Rightarrow n^{\log _6 {6}} = n$\\
+$\Rightarrow T(n) \in \Theta(n*\log _6 {n})$
+
+\item $T(n) = T(n/3) + T(2n/3) + n$\\
+$\Rightarrow T(n) \in \Theta(n*\log{n})$
+
+\item $T(n) = 16*T(n/4) + n^3*\log^2{n}$
+$\Rightarrow n^{\log _16{4}} = \sqrt{n}$
+$\Rightarrow \sqrt{n} < n^3*\log^2{n}$\\
+$\Rightarrow T(n) \in \Theta(n^3*\log^2{n})$
+
+\item $T(n) = T(\sqrt(n) + \Theta(\log{\log{n}})$
+
+\item $T(n) = T(n-3) + \log{n}$
 
 \end{enumerate}
 
+\section{Ταξινόμιση σε Πίνακα με Πολλά Ίδια Στοιχεία}
+
+\section{Δυαδική Αναζήτηση}
+
+\section{Συλλογή Comics}
+\section{Πολυκατοικίες χωρίς Θέα}
 
 \end{document}
