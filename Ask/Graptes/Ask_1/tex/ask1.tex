@@ -7,9 +7,48 @@
 \usepackage{minted}
 \usepackage{listings}
 \usepackage{enumitem} \usepackage{framed} \usepackage{relsize}
-\usepackage{float} \setmainfont[Mapping=TeX-text]{Times New Roman}
+\usepackage{float} 
+\usepackage{fontspec}
+\setmainfont[Mapping=TeX-text]{Times New Roman}
+%\setmainfont{Arial}
+%\setsansfont{FreeSans}
+%\setmonofont{FreeMono}
 \begin{document}
+\def\thesubsection {\alph{subsection}}
 
 \include{title/title}
+
+\section{Άσκηση 1η: Ασυμπτωτικός συμβολισμός,Αναδρομικές
+Σχέσεις} \setcounter{section}{1}
+\subsection{Ταξινόμηση}
+\begin{tabular}{l l}
+$ n*3^n$ & $\Rightarrow O(3^n)$ \\
+$ n^{1.01}$ & $\Rightarrow O(n^{1.01})$\\
+$ 5^{\log _2 {n}}$ & $\Rightarrow O(n^{2.321})$\\
+$ \sum_{k=1}^{n}k^5$ & $\Rightarrow O(n^6)$\\
+$ 2^{{\log _2 {n}}^4}$ & $\Rightarrow O(n^4)$\\
+$ {\log^{\log{n}}{n}}$ & $\Rightarrow O()$\\
+$ \frac{n}{\log\log{n}}$ & $\Rightarrow O()$\\
+$ \exp{\frac{n}{\ln{n}}}$ & $\Rightarrow O()$\\
+$ \log{n^3}$ & $\Rightarrow O()$\\
+$ \sqrt{n}*(\log{n})^{50}$ & $\Rightarrow O()$\\
+$ n*(\log{n})^{10}$ & $\Rightarrow O()$\\
+$ (\log{n})^{\sqrt{n}}$ & $\Rightarrow O()$\\
+$ n^{\log{\log{n}}}$ & $\Rightarrow O()$\\
+$ 2^{2*n}$ & $\Rightarrow O()$\\
+$ \sqrt{n!}$ & $\Rightarrow O()$\\
+$ \log{(n!)}$ & $\Rightarrow O(n*\log{n})$\\
+
+\end{tabular}
+
+\subsection{Τάξη Μεγέθους}
+\begin{enumerate}
+\item $T(n)=5*T(n/7)+n*\log(n)$
+$\Rightarrow n^{\log _5 {7}} = n^{1.209}$\\
+$\Rightarrow n^{1.209} >_{πολ/κά} n*\log{n}$\\
+$T(n) \in \Theta(n^{1.209})$
+
+\end{enumerate}
+
 
 \end{document}
