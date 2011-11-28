@@ -29,7 +29,7 @@
 \section{Ασυμπτωτικός συμβολισμός, Αναδρομικές
 Σχέσεις} \setcounter{section}{1}
 \begin{enumerate}
-\item Ταξινόμηση
+\item Ταξινόμηση\\
 \begin{tabular}{l l}
 $ n*3^n$ & $\Rightarrow O(3^n)$ \\
 $ n^{1.01}$ & $\Rightarrow O(n^{1.01})$\\
@@ -44,7 +44,7 @@ $ \sqrt{n}*(\log{n})^{50}$ & $\Rightarrow O()$\\
 $ n*(\log{n})^{10}$ & $\Rightarrow O()$\\
 $ (\log{n})^{\sqrt{n}}$ & $\Rightarrow O()$\\
 $ n^{\log{\log{n}}}$ & $\Rightarrow O()$\\
-$ 2^{2*n}$ & $\Rightarrow O()$\\
+$ 2^{2*n}$ & $\Rightarrow O(2^{n})$\\
 $ \sqrt{n!}$ & $\Rightarrow O()$\\
 $ \log{(n!)}$ & $\Rightarrow O(n*\log{n})$\\
 
@@ -53,31 +53,31 @@ $ \log{(n!)}$ & $\Rightarrow O(n*\log{n})$\\
 \item Τάξη Μεγέθους
 \begin{enumerate}
 \item $T(n)=5*T(n/7)+n*\log(n)$
-$\Rightarrow n^{\log _5 {7}} = n^{1.209}$
-$\Rightarrow n^{1.209} > n*\log{n}$\\
-$\Rightarrow T(n) \in \Theta(n^{1.209})$
+$\Rightarrow n^{\log _7 {5}} = n^{0.827}$
+$\Rightarrow n^{0.827} < n*\log{n}$\\
+$\Rightarrow T(n) \in \Theta(n*\log{n})$
 
 \item $T(n) = 4*T(n/5)+n/\log^2{n}$
-$\Rightarrow n^{\log_4 {5}} = n^{1.16}$
-$\Rightarrow n^{1.16} > n/\log^2{n}$\\
-$\Rightarrow T(n) \in \Theta(n^{1.16})$
+$\Rightarrow n^{\log_5 {4}} = n^{0.861}$
+$\Rightarrow n^{0.861} < n/\log^2{n}$\\
+$\Rightarrow T(n) \in \Theta(n/\log^2{n})$
 
 \item $T(n) = T(n/3) +3*T(n/7)+n$\\
-$\Rightarrow T(n) \in O(n*k^{\log{n}}*\log{n})$
+$\Rightarrow T(n) \in O(n)$
 
 \item $T(n) = 6*T(n/6)+n$
 $\Rightarrow n^{\log _6 {6}} = n$\\
-$\Rightarrow T(n) \in \Theta(n*\log _6 {n})$
+$\Rightarrow T(n) \in \Theta(n*\log {n})$
 
 \item $T(n) = T(n/3) + T(2n/3) + n$\\
 $\Rightarrow T(n) \in \Theta(n*\log{n})$
 
 \item $T(n) = 16*T(n/4) + n^3*\log^2{n}$
-$\Rightarrow n^{\log _16{4}} = \sqrt{n}$
-$\Rightarrow \sqrt{n} < n^3*\log^2{n}$\\
+$\Rightarrow n^{\log _4{16}} = n^2$
+$\Rightarrow n^2 < n^3*\log^2{n}$\\
 $\Rightarrow T(n) \in \Theta(n^3*\log^2{n})$
 
-\item $T(n) = T(\sqrt(n) + \Theta(\log{\log{n}})$
+\item $T(n) = T(\sqrt(n)) + \Theta(\log{\log{n}})$
 
 \item $T(n) = T(n-3) + \log{n}$\\
 $\Rightarrow T(n) \in \Theta(n*logn)$
@@ -89,11 +89,11 @@ $\Rightarrow T(n) \in \Theta(n*logn)$
 
 \section{Δυαδική Αναζήτηση}
 \begin{enumerate}
-\item Μπορούμε να σπάμε τον πίνακα σε $n/2$ στοιχεία σε κάθε στάδιο. Έπειτα να
-ελέγχουμε το στοιχείο $n/2$ και το στοιχείο $n/2+1$ με το $x$. Αν είναι
-αν είναι μικρότερο του μικρότερου επαναλαμβάνουμε στο πρώτο τμήμα. Αν είναι
-μεγαλύτερο του μεγαλύτερου επαναλαμβάνουμε στο δεύτερο τμήμα. Αν δεν ισχύει
-τίποτα από τα δύο, δεν υπάρχει θέση που να περιέχει τον $x$.
+\item Ξεκινάμε με ένα στοιχείο. Και συγκρίνουμε με τον $x$. Όσο ο $x$ είναι
+μεγαλύτερος από αυτόν διπλασιάζουμε τον αριθμό των στοιχείων και ελέγχουμε
+πάλι με τον τελευταίο. Μόλις φτάσουμε σε μεγαλύτερο αριθμό από τον $x$ έστω
+στη θέση $k$ και εφαρμόζουμε κλασσική δυαδική αναζήτηση στο τμήμα $A[1...k]$. 
+Μέγιστος αριθμός επαναλήψεων είναι $O(\log{k})$.
 \item Παίρνω τα k πρώτα στοιχεία από κάθε πίνακα. Τα χωρίζω στη μέση και
 συγκρίνω τα $A[k/2]$ με $B[k/2+1]$ και $A[k/2+1]$ με $B[k/2]$. Αν
 $A[k/2]<B[k/2+1]$ και $B[k/2]<A[k/2+1]$ τοτε το k-οστό στοιχείο είναι το
@@ -103,5 +103,12 @@ $[B[1]..B[k/2]]$.
 \end{enumerate}
 \section{Συλλογή Comics}
 \section{Πολυκατοικίες χωρίς Θέα}
+Ξεκινάμε με τον από τον $A[1]$ θέτοντας το $B[1]=0$ εφόσον δεν υπάρχει κάποιος
+δυτικότερα από αυτόν. Προχωράμε στον επόμενο $A[2]$ και συγκρίνουμε το ύψος
+του με τον $A[1]$. Αν $A[2]<A[1]$ τότε θέτουμε $B[2]=1$ αλλιώς συγκρίνουμε το
+ύψος $A[2]$ με το ύψος του στόχου του $A[1]$. Αν πάλι δεν βρούμε ψηλότερο
+τρέχουμε πάλι για το στόχο του στόχου αναδρομικά μέχρι να φτάσουμε σε 0
+ή σε κάποιον ψηλότερο του $A[2]$ και τον θέτουμε ως στόχο στο πεδίο $B[2]$.
+Επαναλαμβάνουμε μέχρι $n$. Μέγιστος αριθμός συγκρίσεων είναι $2n$.
 
 \end{document}
