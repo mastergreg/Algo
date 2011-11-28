@@ -6,7 +6,7 @@
 
 * Creation Date : 28-11-2011
 
-* Last Modified : Mon 28 Nov 2011 07:39:07 PM EET
+* Last Modified : Mon 28 Nov 2011 07:45:43 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -31,7 +31,6 @@ int main()
     {
         if(temperatures[i]>=min_temp)
         {
-            cout << temperatures[i] << " " << min_temp << endl;
             current_days++;
         }
         else
