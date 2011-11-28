@@ -20,13 +20,16 @@
 %\setsansfont{FreeSans}
 %\setmonofont{FreeMono}
 \begin{document}
-\def\thesubsection {\alph{subsection}}
+%\def\thesubsection {\alph{subsection}}
+\renewcommand{\labelenumi}{\alph{enumi}}
+\renewcommand{\labelenumii}{(\roman{enumii})}
 
 \include{title/title}
 
 \section{Ασυμπτωτικός συμβολισμός, Αναδρομικές
 Σχέσεις} \setcounter{section}{1}
-\subsection{Ταξινόμηση}
+\begin{enumerate}
+\item Ταξινόμηση
 \begin{tabular}{l l}
 $ n*3^n$ & $\Rightarrow O(3^n)$ \\
 $ n^{1.01}$ & $\Rightarrow O(n^{1.01})$\\
@@ -47,7 +50,7 @@ $ \log{(n!)}$ & $\Rightarrow O(n*\log{n})$\\
 
 \end{tabular}
 
-\subsection{Τάξη Μεγέθους}
+\item Τάξη Μεγέθους
 \begin{enumerate}
 \item $T(n)=5*T(n/7)+n*\log(n)$
 $\Rightarrow n^{\log _5 {7}} = n^{1.209}$
@@ -80,11 +83,11 @@ $\Rightarrow T(n) \in \Theta(n^3*\log^2{n})$
 $\Rightarrow T(n) \in \Theta(n*logn)$
 
 \end{enumerate}
+\end{enumerate}
 
 \section{Ταξινόμιση σε Πίνακα με Πολλά Ίδια Στοιχεία}
 
 \section{Δυαδική Αναζήτηση}
-\renewcommand{\labelenumi}{\alph{enumi}}
 \begin{enumerate}
 \item Μπορούμε να σπάμε τον πίνακα σε $n/2$ στοιχεία σε κάθε στάδιο. Έπειτα να
 ελέγχουμε το στοιχείο $n/2$ και το στοιχείο $n/2+1$ με το $x$. Αν είναι
