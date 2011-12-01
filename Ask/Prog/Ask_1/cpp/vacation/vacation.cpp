@@ -6,7 +6,7 @@
 
 * Creation Date : 28-11-2011
 
-* Last Modified : Tue 29 Nov 2011 11:06:14 PM EET
+* Last Modified : Thu 01 Dec 2011 06:55:19 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -17,7 +17,7 @@ using namespace std;
 int main()
 {
     unsigned int days,i;
-    unsigned int j;
+    unsigned int j,temp_size;
     int min_temp;
     unsigned int max_days=0;
     vector<double> temperatures;
@@ -25,26 +25,24 @@ int main()
 
     cin >> days >> min_temp;
     temperatures.resize(days);
-    my_que.resize(days);
-    for (i=0;i<days;i++)
+    for (i=0;i<temperatures.size();i++)
     {
         cin >> temperatures[i];
-        my_que[i] = temperatures[i];
     }
     //end of data input
+	temp_size = temperatures.size();
 
     for(i=0;i<days;i++)
     {
-        my_que.push_front(0);
-        my_que.pop_back();
-        for(j=0;j<days;j++)
+        for(j=0;j<temp_size;j++)
         {
-            temperatures[j]+=my_que[j];
-            if (temperatures[j]>=min_temp*(i+2))
+            temperatures[j]+=temperatures[j+1];
+            if (temperatures[j]>=(double) min_temp*(i+1))
             {
-                max_days = i+2;
+                max_days = i+1;
             }
         }
+		temp_size--;
     }
     cout << max_days << endl;
     return 0;
