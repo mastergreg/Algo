@@ -78,6 +78,11 @@ $\Rightarrow n^2 < n^3*\log^2{n}$\\
 $\Rightarrow T(n) \in \Theta(n^3*\log^2{n})$
 
 \item $T(n) = T(\sqrt(n)) + \Theta(\log{\log{n}})$
+$(k=\log{n},f(k)=T(n))$\\
+$\Rightarrow
+T(\sqrt{n})=f(\log{\sqrt{n}})=f(\frac{1}{2}*\log{n})=f(\frac{k}{2}) $\\
+$\Rightarrow f(k)=f(\frac{k}{2})+\Theta(\log{k})$\\
+$\Rightarrow \Theta(n)$
 
 \item $T(n) = T(n-3) + \log{n}$\\
 $\Rightarrow T(n) \in \Theta(n*logn)$
