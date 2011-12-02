@@ -6,7 +6,7 @@
 
  * Creation Date : 28-11-2011
 
- * Last Modified : Fri 02 Dec 2011 10:50:03 AM EET
+ * Last Modified : Fri 02 Dec 2011 12:07:29 PM EET
 
  * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -21,6 +21,7 @@ int main()
     int pivot=0;
     int ans=0;
     int ret=0;
+    int maximum=0;
     vector<int> bookpages;
     cin >> books >> writers;
     bookpages.resize(books);
@@ -28,11 +29,12 @@ int main()
     {
         cin >> bookpages.at(i);
     }
-    for (i=0;i<books;i++)
+    maximum=*max_element(bookpages.begin(),bookpages.end());
+    do
     {
-        pivot+=bookpages[i];
+        pivot++;
         ret = decide(bookpages,writers,pivot);
-        if (ret > 0 )
+        if(ret>0)
         {
             ans = ret;
         }
@@ -40,8 +42,7 @@ int main()
         {
             break;
         }
-
-    }
+    }while(pivot<maximum);
     cout << ans << endl;
 
 
@@ -55,7 +56,6 @@ int decide(vector<int> bookpg,int writers,int pivot)
     int max_pages=0;
     for(i=0;i<writers;i++)
     {
-        max_pages = max(max_pages,buf);
         buf=0;
         do
         {
@@ -68,6 +68,7 @@ int decide(vector<int> bookpg,int writers,int pivot)
                 buf+=bookpg[j];
                 j++;
             }
+            max_pages = max(max_pages,buf);
         }while(buf<pivot);
     }
     return max_pages;
