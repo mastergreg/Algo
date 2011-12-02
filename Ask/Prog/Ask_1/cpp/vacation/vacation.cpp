@@ -6,7 +6,7 @@
 
 * Creation Date : 28-11-2011
 
-* Last Modified : Thu 01 Dec 2011 06:55:19 PM EET
+* Last Modified : Thu 01 Dec 2011 10:28:52 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -24,25 +24,30 @@ int main()
     deque<double> my_que;
 
     cin >> days >> min_temp;
+	min_temp-=273;
     temperatures.resize(days);
     for (i=0;i<temperatures.size();i++)
     {
         cin >> temperatures[i];
+    }
+    for (i=0;i<temperatures.size();i++)
+    {
+        temperatures[i]-=273;
     }
     //end of data input
 	temp_size = temperatures.size();
 
     for(i=0;i<days;i++)
     {
-        for(j=0;j<temp_size;j++)
+        for(j=0;j<temp_size;j+=2)
         {
-            temperatures[j]+=temperatures[j+1];
-            if (temperatures[j]>=(double) min_temp*(i+1))
+            temperatures[j/2]=temperatures[j]+temperatures[j+1];
+            if (temperatures[j/2]>=(double) min_temp*2*(i+1))
             {
-                max_days = i+1;
+                max_days = 2*(i+1);
             }
         }
-		temp_size--;
+		temp_size/=2;
     }
     cout << max_days << endl;
     return 0;

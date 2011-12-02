@@ -6,7 +6,7 @@
 
 * Creation Date : 28-11-2011
 
-* Last Modified : Tue 29 Nov 2011 09:54:41 PM EET
+* Last Modified : Thu 01 Dec 2011 10:04:20 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -18,6 +18,7 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 #include <iostream>
 #include <deque>
 #include <algorithm>
+#include <cmath>
 
 std::vector<double> next_temps(std::vector<double> temps,int level);
 
