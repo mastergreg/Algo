@@ -6,7 +6,7 @@
 
  * Creation Date : 28-11-2011
 
- * Last Modified : Fri 02 Dec 2011 12:07:29 PM EET
+ * Last Modified : Tue 06 Dec 2011 12:23:13 AM EET
 
  * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -21,7 +21,9 @@ int main()
     int pivot=0;
     int ans=0;
     int ret=0;
-    int maximum=0;
+    int top=0;
+    int phigh=0;
+    int plow=0;
     vector<int> bookpages;
     cin >> books >> writers;
     bookpages.resize(books);
@@ -29,48 +31,55 @@ int main()
     {
         cin >> bookpages.at(i);
     }
-    maximum=*max_element(bookpages.begin(),bookpages.end());
+    top=accumulate(bookpages.begin(),bookpages.end(),0);
+    phigh=top;
     do
     {
-        pivot++;
+        pivot=(phigh+plow)/2;
         ret = decide(bookpages,writers,pivot);
+        
         if(ret>0)
         {
             ans = ret;
+            plow=pivot;
         }
         else
         {
-            break;
+            phigh=pivot;
         }
-    }while(pivot<maximum);
+        cout << plow << " " << pivot << " " << phigh << endl;
+    }while(pivot>0 && plow!=(phigh-1));
     cout << ans << endl;
-
-
     return 0;
 }
 int decide(vector<int> bookpg,int writers,int pivot)
 {
     int buf,i,j;
-    j=0;
-    int pages = bookpg.size();
+    int books = bookpg.size();
     int max_pages=0;
-    for(i=0;i<writers;i++)
+    for(i=0,j=0;i<writers;i++)
     {
         buf=0;
         do
         {
-            if (j>=pages)
+            if (j==books)
             {
                 return 0;
             }
             else
             {
                 buf+=bookpg[j];
-                j++;
             }
-            max_pages = max(max_pages,buf);
+            j++;
         }while(buf<pivot);
+        max_pages = max(max_pages,buf);
     }
+    while(j<books)
+    {
+        buf+=bookpg[j];
+        j++;
+    }
+    max_pages = max(max_pages,buf);
     return max_pages;
 
 }

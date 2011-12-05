@@ -6,7 +6,7 @@
 
 * Creation Date : 28-11-2011
 
-* Last Modified : Fri 02 Dec 2011 11:12:03 AM EET
+* Last Modified : Mon 05 Dec 2011 06:46:29 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -17,5 +17,6 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <numeric>
 int decide(std::vector<int> bookpages,int writers,int pivot);
 #endif
