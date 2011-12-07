@@ -6,7 +6,7 @@
 
 * Creation Date : 28-11-2011
 
-* Last Modified : Thu 01 Dec 2011 10:04:20 PM EET
+* Last Modified : Wed 07 Dec 2011 10:05:35 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -20,6 +20,15 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 #include <algorithm>
 #include <cmath>
 
-std::vector<double> next_temps(std::vector<double> temps,int level);
 
+class touple
+{
+    public:
+        int sum;
+        int index;
+        touple(int s,int i);
+};
+std::vector<int> getSums(std::vector<int> temps);
+std::vector<touple *> getlefts(std::vector<int> sums);
+std::vector<touple *> getrights(std::vector<int> sums);
 #endif
