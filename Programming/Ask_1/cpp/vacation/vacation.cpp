@@ -6,7 +6,7 @@
 
 * Creation Date : 28-11-2011
 
-* Last Modified : Wed 07 Dec 2011 10:37:00 PM EET
+* Last Modified : Thu 08 Dec 2011 10:12:39 AM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -23,10 +23,6 @@ int main()
 {
     unsigned int days=0;
     unsigned int i=0;
-    unsigned int j=0;
-    unsigned int limiti=0;
-    unsigned int limitj=0;
-    int buf;
     int min_temp=0;
     int max_days=0;
     vector<int> temperatures;
@@ -45,16 +41,27 @@ int main()
     prefix_sums = getSums(temperatures);
     lefts=getlefts(prefix_sums);
     rights=getrights(prefix_sums);
+    max_days = solve(lefts,rights);
+    max_days = min(max_days,(int)days);
+    cout << max_days << endl;
+    return 0;
+}
+int solve(vector<touple *> lefts,vector<touple *> rights)
+{
+    int i=0;
+    unsigned int j=0;
+    unsigned int limiti=0;
+    unsigned int limitj=0;
+    int buf=0;
     limiti = lefts.size();
     limitj = rights.size();
-    for(i=0,j=0;j<limitj;j++)
+    for(i=limiti-1,j=0;j<limitj;j++)
     {
-        for(;i<limiti;i++)
+        for(;i>=0;i--)
         {
             if(((rights[j]->sum)-(lefts[i]->sum))>0)
             {
-                buf=(rights[j]->index)-(lefts[i]->index)+1;
-                max_days=max(max_days,buf);
+                buf=max(buf,(rights[j]->index)-(lefts[i]->index));
             }
             else
             {
@@ -62,10 +69,7 @@ int main()
             }
         }
     }
-
-
-    cout << max_days << endl;
-    return 0;
+    return buf;
 }
 vector<int> getSums(vector<int> temps)
 {
@@ -83,13 +87,13 @@ vector<int> getSums(vector<int> temps)
 vector<touple *> getlefts(vector<int> sums)
 {
     vector<touple *> lefts;
-    lefts.push_back(new touple(0,0));
     int i;
     int lim=sums.size();
-    int curr;
+    int curr=sums[0];
+    lefts.push_back(new touple(0,-1));
     for(i=0;i<lim;i++)
     {
-        if(sums[i]>curr)
+        if(sums[i]<curr)
         {
             curr=sums[i];
             lefts.push_back(new touple(sums[i],i));
@@ -103,7 +107,7 @@ vector<touple *> getrights(vector<int> sums)
     int i;
     int lim=sums.size()-1;
     int curr=0;
-    rights.push_back(new touple(sums[lim],lim));
+    rights.push_back(new touple(sums[lim],lim+1));
     curr=sums[lim];
     for(i=lim-1;i>=0;i--)
     {

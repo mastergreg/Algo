@@ -6,7 +6,7 @@
 
 * Creation Date : 28-11-2011
 
-* Last Modified : Wed 07 Dec 2011 10:05:35 PM EET
+* Last Modified : Thu 08 Dec 2011 09:51:21 AM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -28,6 +28,7 @@ class touple
         int index;
         touple(int s,int i);
 };
+int solve(std::vector<touple *> lefts,std::vector<touple *> rights);
 std::vector<int> getSums(std::vector<int> temps);
 std::vector<touple *> getlefts(std::vector<int> sums);
 std::vector<touple *> getrights(std::vector<int> sums);
