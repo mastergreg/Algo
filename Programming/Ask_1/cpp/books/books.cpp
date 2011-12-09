@@ -6,7 +6,7 @@
 
  * Creation Date : 28-11-2011
 
- * Last Modified : Fri 09 Dec 2011 12:07:48 PM EET
+ * Last Modified : Fri 09 Dec 2011 12:23:08 PM EET
 
  * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -63,8 +63,9 @@ int maxPages(vector<int> bookpg,int writers,int pivot)
         cout << "Writer " << i << endl;
         while(buf<pivot)
         {
-            if (j==books)       //j exceeded vector size
+            if (j==books && (i<(writers-1)))       //j exceeded vector size
             {
+                cout << "my line " << "writers " << writers << " i "<<i<< " j " <<j << " buf "<< buf << " pivot " << pivot << endl;
                 cout << "\tFAIL" << endl; //faulty here
                 return 0;
             }
@@ -72,10 +73,13 @@ int maxPages(vector<int> bookpg,int writers,int pivot)
             cout << "\t" <<pivot << " " << j << " buf " << buf<<endl;
             j++;
         }
-        buf-=bookpg[j-1];
-        if(buf==0)
+        if(j>0)
         {
-            buf=bookpg[j-1];
+            buf-=bookpg[j-1];
+            if(buf==0)
+            {
+                buf=bookpg[j-1];
+            }
         }
         pages=pages>buf?pages:buf;
     }
