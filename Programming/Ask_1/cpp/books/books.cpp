@@ -6,7 +6,7 @@
 
  * Creation Date : 28-11-2011
 
- * Last Modified : Wed 07 Dec 2011 12:13:44 PM EET
+ * Last Modified : Fri 09 Dec 2011 12:07:48 PM EET
 
  * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -36,26 +36,17 @@ int main()
     do
     {
         pivot=(phigh+plow)/2;
-        if(decide(bookpages,writers,pivot))
+        ret = maxPages(bookpages,writers,pivot);
+        if(ret >0 )
         {
-            //you can get at least pivot
-            //books to all writters
-            //lets test for more
-            plow=pivot-1;
-            ret = maxPages(bookpages,writers,pivot);
-            if (ans==ret)
-            {
-                break;
-            }
-            ans = ans>ret?ans:ret;
+            ans=ret;
+            plow=pivot;
         }
         else
         {
-            //cannot get at least pivot
-            //lets try less
-            phigh=pivot+1;
+            phigh=pivot;
         }
-    }while(phigh-plow>2);
+    }while((phigh-plow)>1);
     cout << ans << endl;
     return 0;
 }
@@ -69,51 +60,27 @@ int maxPages(vector<int> bookpg,int writers,int pivot)
     for(i=0,j=0;i<writers;i++)
     {
         buf=0;
-        do
+        cout << "Writer " << i << endl;
+        while(buf<pivot)
         {
             if (j==books)       //j exceeded vector size
-            {                   //so there can be no solution
+            {
+                cout << "\tFAIL" << endl; //faulty here
                 return 0;
             }
-            else
-            {
-                buf+=bookpg[j];
-            }
+            buf+=bookpg[j];
+            cout << "\t" <<pivot << " " << j << " buf " << buf<<endl;
             j++;
-        }while(buf<pivot);
+        }
+        buf-=bookpg[j-1];
+        if(buf==0)
+        {
+            buf=bookpg[j-1];
+        }
         pages=pages>buf?pages:buf;
     }
-    while(j<books)
-    {
-        buf+=bookpg[j++];
-    }
+    for(;j<books;buf+=bookpg[j++]){}
+    cout << j << " " << books << endl;
     pages=pages>buf?pages:buf;
     return pages;
-
-}
-bool decide(vector<int> bookpg,int writers,int pivot)
-{
-    int buf,i,j;
-    int books = bookpg.size();
-    //start from j=0 and j++ until all
-    //writers have at least pivot books
-    for(i=0,j=0;i<writers;i++)
-    {
-        buf=0;
-        do
-        {
-            if (j==books)       //j exceeded vector size
-            {                   //so there can be no solution
-                cout << "exceeded array size" << endl;
-                return false;
-            }
-            else
-            {
-                buf+=bookpg[j];
-            }
-            j++;
-        }while(buf<pivot);
-    }
-    return true;
-
 }
