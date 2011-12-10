@@ -6,7 +6,7 @@
 
  * Creation Date : 28-11-2011
 
- * Last Modified : Fri 09 Dec 2011 12:23:08 PM EET
+ * Last Modified : Sat 10 Dec 2011 12:21:23 PM EET
 
  * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -19,9 +19,8 @@ int main()
     unsigned int writers=0;
     unsigned int i;
     int pivot=0;
-    int ans=0;
-    int ret=0;
     int top=0;
+    int maxelem;
     int phigh=0;
     int plow=0;
     vector<int> bookpages;
@@ -32,59 +31,66 @@ int main()
         cin >> bookpages.at(i);
     }
     top=accumulate(bookpages.begin(),bookpages.end(),0);
+    maxelem=*(max_element(bookpages.begin(),bookpages.end()));
     phigh=top;
+    plow=max((int)(top/books),maxelem);
     do
     {
         pivot=(phigh+plow)/2;
-        ret = maxPages(bookpages,writers,pivot);
-        if(ret >0 )
-        {
-            ans=ret;
-            plow=pivot;
-        }
-        else
+        if(decide(bookpages,writers,pivot))
         {
             phigh=pivot;
         }
+        else
+        {
+            plow=pivot;
+        }
     }while((phigh-plow)>1);
-    cout << ans << endl;
+    if(decide(bookpages,writers,plow))
+    {
+        cout << plow << endl;
+    }
+    else
+    {
+        cout << phigh << endl;
+    }
     return 0;
 }
-int maxPages(vector<int> bookpg,int writers,int pivot)
+
+bool decide(vector<int> books,unsigned int writers, int pivot)
 {
-    int buf,i,j;
-    int books = bookpg.size();
-    int pages=0;
-    //start from j=0 and j++ until all
-    //writers have at least pivot books
-    for(i=0,j=0;i<writers;i++)
+    unsigned int i=0;
+    unsigned int j=0;
+    int buf=0;
+    for (i=0,j=0;i<writers;i++)
     {
         buf=0;
-        cout << "Writer " << i << endl;
-        while(buf<pivot)
+        while(buf<=pivot)
         {
-            if (j==books && (i<(writers-1)))       //j exceeded vector size
+            if(j==books.size())
             {
-                cout << "my line " << "writers " << writers << " i "<<i<< " j " <<j << " buf "<< buf << " pivot " << pivot << endl;
-                cout << "\tFAIL" << endl; //faulty here
-                return 0;
+                return true;
             }
-            buf+=bookpg[j];
-            cout << "\t" <<pivot << " " << j << " buf " << buf<<endl;
+            buf+=books[j];
             j++;
         }
-        if(j>0)
+        if(i==writers-1)
         {
-            buf-=bookpg[j-1];
-            if(buf==0)
+            return false;
+        }
+        else
+        {
+            if(buf>books[j-1])
             {
-                buf=bookpg[j-1];
+                buf-=books[j-1];
+                j--;
             }
         }
-        pages=pages>buf?pages:buf;
     }
-    for(;j<books;buf+=bookpg[j++]){}
-    cout << j << " " << books << endl;
-    pages=pages>buf?pages:buf;
-    return pages;
+    if (j<books.size()-1)
+    {
+        return false;
+    }
+    cout << writers << " " << j << " ";
+    return true;
 }

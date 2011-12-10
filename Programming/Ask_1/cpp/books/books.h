@@ -6,7 +6,7 @@
 
 * Creation Date : 28-11-2011
 
-* Last Modified : Fri 09 Dec 2011 10:54:52 AM EET
+* Last Modified : Sat 10 Dec 2011 12:21:48 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -18,5 +18,5 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 #include <vector>
 #include <algorithm>
 #include <numeric>
-int maxPages(std::vector<int> bookpages,int writers,int pivot);
+bool decide(std::vector<int> bookpages,unsigned int writers,int pivot);
 #endif
