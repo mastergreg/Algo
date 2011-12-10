@@ -6,7 +6,7 @@
 
 * Creation Date : 28-11-2011
 
-* Last Modified : Sat 10 Dec 2011 05:18:46 PM EET
+* Last Modified : Sun 11 Dec 2011 01:44:37 AM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -15,8 +15,10 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 #include <iostream>
 #include <deque>
 #include <algorithm>
+#include <numeric>
 #include <cmath>
 
+using namespace std;
 
 class touple
 {
@@ -25,12 +27,10 @@ class touple
         int index;
         touple(int s,int i);
 };
-int solve(std::vector<touple *> lefts,std::vector<touple *> rights);
-std::vector<int> getSums(std::vector<int> temps);
-std::vector<touple *> getlefts(std::vector<int> sums);
-std::vector<touple *> getrights(std::vector<int> sums);
+int solve(vector<touple *> lefts,vector<touple *> rights);
+vector<touple *> getlefts(vector<int> sums);
+vector<touple *> getrights(vector<int> sums);
 
-using namespace std;
 touple::touple(int s,int i)
 {
     sum=s;
@@ -50,12 +50,13 @@ int main()
 
     cin >> days >> min_temp;
     temperatures.resize(days);
+    prefix_sums.resize(days);
     for (i=0;i<days;i++)
     {
         cin >> temperatures[i];
         temperatures[i]-=min_temp;
     }
-    prefix_sums = getSums(temperatures);
+    partial_sum(temperatures.begin(),temperatures.end(),prefix_sums.begin());
     lefts=getlefts(prefix_sums);
     rights=getrights(prefix_sums);
     max_days = solve(lefts,rights);
@@ -77,29 +78,12 @@ int solve(vector<touple *> lefts,vector<touple *> rights)
         for(;i>=0;i--)
         {
             if(((rights[j]->sum)-(lefts[i]->sum))>0)
-            {
                 buf=max(buf,(rights[j]->index)-(lefts[i]->index));
-            }
             else
-            {
                 break;
-            }
         }
     }
     return buf;
-}
-vector<int> getSums(vector<int> temps)
-{
-    vector<int> sums;
-    int i;
-    int lim=temps.size();
-    sums.resize(lim);
-    sums[0]=temps[0];
-    for(i=1;i<lim;i++)
-    {
-        sums[i]=sums[i-1]+temps[i];
-    }
-    return sums;
 }
 vector<touple *> getlefts(vector<int> sums)
 {
