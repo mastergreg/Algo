@@ -6,13 +6,22 @@
 
  * Creation Date : 28-11-2011
 
- * Last Modified : Sat 10 Dec 2011 12:21:23 PM EET
+ * Last Modified : Sat 10 Dec 2011 05:17:12 PM EET
 
  * Created By : Greg Liras <gregliras@gmail.com>
 
  _._._._._._._._._._._._._._._._._._._._._.*/
-#include "books.h"
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <numeric>
+
+
 using namespace std;
+
+bool decide(vector<int> bookpages,unsigned int writers,int pivot);
+
 int main()
 {
     unsigned int books=0;

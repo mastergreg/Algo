@@ -6,12 +6,29 @@
 
 * Creation Date : 28-11-2011
 
-* Last Modified : Thu 08 Dec 2011 10:12:39 AM EET
+* Last Modified : Sat 10 Dec 2011 05:18:46 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
 _._._._._._._._._._._._._._._._._._._._._.*/
-#include "vacation.h"
+#include <vector>
+#include <iostream>
+#include <deque>
+#include <algorithm>
+#include <cmath>
+
+
+class touple
+{
+    public:
+        int sum;
+        int index;
+        touple(int s,int i);
+};
+int solve(std::vector<touple *> lefts,std::vector<touple *> rights);
+std::vector<int> getSums(std::vector<int> temps);
+std::vector<touple *> getlefts(std::vector<int> sums);
+std::vector<touple *> getrights(std::vector<int> sums);
 
 using namespace std;
 touple::touple(int s,int i)

@@ -1,6 +1,6 @@
 CCFLAGS=-g -Wall -Wextra -Wuninitialized
 all:	books
-books:	books.cpp books.h
+books:	books.cpp
 	g++ books.cpp -o books ${CCFLAGS}
 tests:books
 	./books < testcases/input${TEST}.txt
