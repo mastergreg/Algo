@@ -6,7 +6,7 @@
 
  * Creation Date : 28-11-2011
 
- * Last Modified : Sat 10 Dec 2011 05:17:12 PM EET
+ * Last Modified : Mon 12 Dec 2011 12:12:46 AM EET
 
  * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -36,9 +36,7 @@ int main()
     cin >> books >> writers;
     bookpages.resize(books);
     for (i=0;i<books;i++)
-    {
         cin >> bookpages.at(i);
-    }
     top=accumulate(bookpages.begin(),bookpages.end(),0);
     maxelem=*(max_element(bookpages.begin(),bookpages.end()));
     phigh=top;
@@ -47,22 +45,14 @@ int main()
     {
         pivot=(phigh+plow)/2;
         if(decide(bookpages,writers,pivot))
-        {
             phigh=pivot;
-        }
         else
-        {
             plow=pivot;
-        }
     }while((phigh-plow)>1);
     if(decide(bookpages,writers,plow))
-    {
         cout << plow << endl;
-    }
     else
-    {
         cout << phigh << endl;
-    }
     return 0;
 }
 
@@ -77,29 +67,18 @@ bool decide(vector<int> books,unsigned int writers, int pivot)
         while(buf<=pivot)
         {
             if(j==books.size())
-            {
                 return true;
-            }
             buf+=books[j];
             j++;
         }
         if(i==writers-1)
-        {
             return false;
-        }
         else
-        {
             if(buf>books[j-1])
-            {
-                buf-=books[j-1];
-                j--;
-            }
-        }
+                buf-=books[--j];
     }
     if (j<books.size()-1)
-    {
         return false;
-    }
     cout << writers << " " << j << " ";
     return true;
 }
