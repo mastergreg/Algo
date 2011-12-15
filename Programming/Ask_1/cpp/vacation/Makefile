@@ -1,4 +1,4 @@
-CCFLAGS=-g -Wall -Wextra -Wuninitialized
+CCFLAGS=-Wall -Wextra -Wuninitialized -O3
 all:	vacation
 vacation:	vacation.cpp
 	g++ vacation.cpp -o vacation ${CCFLAGS}
