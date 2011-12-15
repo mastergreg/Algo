@@ -7,7 +7,7 @@
 #
 #* Creation Date : 12-12-2011
 #
-#* Last Modified : Thu 15 Dec 2011 07:38:44 AM EET
+#* Last Modified : Thu 15 Dec 2011 10:14:51 AM EET
 #
 #* Created By : Greg Liras <gregliras@gmail.com>
 #
@@ -57,7 +57,10 @@ def main():
             phigh=pivot
         else:
             plow=pivot
-    print plow,phigh
+    if decide(plow):
+        print plow
+    else:
+        print phigh
 
 
 
