@@ -6,7 +6,7 @@
 
 * Creation Date : 28-11-2011
 
-* Last Modified : Thu 15 Dec 2011 02:24:18 PM EET
+* Last Modified : Thu 15 Dec 2011 02:44:06 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -21,8 +21,8 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 using namespace std;
 
 int solve(vector<int> lefts,vector<int> rights,vector<int> sums);
-int getlefts(vector<int>::iterator it,vector<int> sums);
-int getrights(vector<int>::iterator it,vector<int> sums);
+int getlefts(vector<int>::iterator it,vector<int>::iterator sumsstart,int len);
+int getrights(vector<int>::iterator it,vector<int>::reverse_iterator sumsstart,int len);
 
 int main()
 {
@@ -33,45 +33,40 @@ int main()
     int cr=0;
     int cl=0;
     vector<int> temperatures;
-    vector<int> prefix_sums;
     vector<int> lefts;
     vector<int> rights;
 
 
     cin >> days >> min_temp;
     temperatures.resize(days);
-    prefix_sums.resize(days);
     lefts.resize(days);
     rights.resize(days);
 
     cin >> temperatures[0];
     temperatures[0]-=min_temp;
-    prefix_sums[0]=temperatures[0];
     for (i=1;i<days;i++)
     {
         cin >> temperatures[i];
         temperatures[i]-=min_temp;
-        prefix_sums[i]=prefix_sums[i-1]+temperatures[i];
+        temperatures[i]+=temperatures[i-1];
     }
-    //partial_sum(temperatures.begin(),temperatures.end(),prefix_sums.begin());
-    cl=getlefts(lefts.begin(),prefix_sums);
+    cl=getlefts(lefts.begin(),temperatures.begin(),temperatures.size());
     lefts.erase(lefts.begin()+cl,lefts.end());
-    //lefts.resize(cr);
 
-    cr=getrights(rights.begin(),prefix_sums);
+    cr=getrights(rights.begin(),temperatures.rbegin(),temperatures.size());
     rights.erase(rights.begin()+cl,rights.end());
-    //rights.resize(cr);
-    max_days = solve(lefts,rights,prefix_sums);
-    max_days = min(max_days,(int)days);
+
+    max_days = solve(lefts,rights,temperatures);
     cout << max_days << endl;
     return 0;
 }
+
 int solve(vector<int> lefts,vector<int> rights,vector<int> sums)
 {
     int i=0;
     unsigned int j=0;
-    unsigned int limiti=0;
-    unsigned int limitj=0;
+    unsigned int limiti;
+    unsigned int limitj;
     int buf=0;
     limiti = lefts.size();
     limitj = rights.size();
@@ -91,19 +86,21 @@ int solve(vector<int> lefts,vector<int> rights,vector<int> sums)
     }
     return buf;
 }
-int getlefts(vector<int>::iterator it, vector<int> sums)
+
+int getlefts(vector<int>::iterator it, vector<int>::iterator sumsstart,int sumslen)
 {
     int i;
-    int lim=sums.size();
-    int curr=sums[0];
+    int lim=sumslen;
+    int curr=*sumsstart;
     *it=0;
     it++;
+    sumsstart++;
     int c =1;
-    for(i=1;i<lim;i++)
+    for(i=1;i<lim;i++,sumsstart++)
     {
-        if(sums[i]<curr)
+        if(*sumsstart<curr)
         {
-            curr=sums[i];
+            curr=*sumsstart;
             (*it)=i;
             it++;
             c++;
@@ -111,20 +108,22 @@ int getlefts(vector<int>::iterator it, vector<int> sums)
     }
     return c;
 }
-int getrights(vector<int>::iterator it, vector<int> sums)
+
+int getrights(vector<int>::iterator it, vector<int>::reverse_iterator sumsstart,int sumslen)
 {
     int i;
-    int lim=sums.size()-1;
+    int lim=sumslen-1;
     int curr=0;
     int c =1;
     *it=lim;
     it++;
-    curr=sums[lim];
-    for(i=lim-1;i>=0;i--)
+    curr=*sumsstart;
+    sumsstart++;
+    for(i=lim-1;i>=0;i--,sumsstart++)
     {
-        if(sums[i]>curr)
+        if(*sumsstart>curr)
         {
-            curr=sums[i];
+            curr=*sumsstart;
             *it=i;
             it++;
             c++;
