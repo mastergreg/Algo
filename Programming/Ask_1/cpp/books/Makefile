@@ -3,5 +3,5 @@ all:	books
 books:	books.cpp
 	g++ books.cpp -o books ${CCFLAGS}
 tests:books
-	time ./books < testcases/input${TEST}.txt
+	./books < testcases/input${TEST}.txt
 	@cat testcases/output${TEST}.txt
