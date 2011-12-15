@@ -6,7 +6,7 @@
 
 * Creation Date : 28-11-2011
 
-* Last Modified : Thu 15 Dec 2011 02:44:06 PM EET
+* Last Modified : Thu 15 Dec 2011 04:25:11 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -20,21 +20,21 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 
 using namespace std;
 
-int solve(vector<int> lefts,vector<int> rights,vector<int> sums);
-int getlefts(vector<int>::iterator it,vector<int>::iterator sumsstart,int len);
-int getrights(vector<int>::iterator it,vector<int>::reverse_iterator sumsstart,int len);
+long long int solve(vector<long long int> lefts,vector<long long int> rights,vector<long long int> sums);
+long long int getlefts(vector<long long int>::iterator it,vector<long long int>::iterator sumsstart,long long int len);
+long long int getrights(vector<long long int>::iterator it,vector<long long int>::reverse_iterator sumsstart,long long int len);
 
 int main()
 {
-    unsigned int days=0;
-    unsigned int i=0;
-    int min_temp=0;
-    int max_days=0;
-    int cr=0;
-    int cl=0;
-    vector<int> temperatures;
-    vector<int> lefts;
-    vector<int> rights;
+    unsigned long long int days=0;
+    unsigned long long int i=0;
+    long long int min_temp=0;
+    long long int max_days=0;
+    long long int cr=0;
+    long long int cl=0;
+    vector<long long int> temperatures;
+    vector<long long int> lefts;
+    vector<long long int> rights;
 
 
     cin >> days >> min_temp;
@@ -61,13 +61,13 @@ int main()
     return 0;
 }
 
-int solve(vector<int> lefts,vector<int> rights,vector<int> sums)
+long long int solve(vector<long long int> lefts,vector<long long int> rights,vector<long long int> sums)
 {
-    int i=0;
-    unsigned int j=0;
-    unsigned int limiti;
-    unsigned int limitj;
-    int buf=0;
+    long long int i=0;
+    unsigned long long int j=0;
+    unsigned long long int limiti;
+    unsigned long long int limitj;
+    long long int buf=0;
     limiti = lefts.size();
     limitj = rights.size();
     for(i=limiti-1,j=0;j<limitj;j++)
@@ -87,15 +87,15 @@ int solve(vector<int> lefts,vector<int> rights,vector<int> sums)
     return buf;
 }
 
-int getlefts(vector<int>::iterator it, vector<int>::iterator sumsstart,int sumslen)
+long long int getlefts(vector<long long int>::iterator it, vector<long long int>::iterator sumsstart,long long int sumslen)
 {
-    int i;
-    int lim=sumslen;
-    int curr=*sumsstart;
+    long long int i;
+    long long int lim=sumslen;
+    long long int curr=*sumsstart;
     *it=0;
     it++;
     sumsstart++;
-    int c =1;
+    long long int c =1;
     for(i=1;i<lim;i++,sumsstart++)
     {
         if(*sumsstart<curr)
@@ -109,12 +109,12 @@ int getlefts(vector<int>::iterator it, vector<int>::iterator sumsstart,int sumsl
     return c;
 }
 
-int getrights(vector<int>::iterator it, vector<int>::reverse_iterator sumsstart,int sumslen)
+long long int getrights(vector<long long int>::iterator it, vector<long long int>::reverse_iterator sumsstart,long long int sumslen)
 {
-    int i;
-    int lim=sumslen-1;
-    int curr=0;
-    int c =1;
+    long long int i;
+    long long int lim=sumslen-1;
+    long long int curr=0;
+    long long int c =1;
     *it=lim;
     it++;
     curr=*sumsstart;

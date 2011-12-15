@@ -6,7 +6,7 @@
 
  * Creation Date : 28-11-2011
 
- * Last Modified : Mon 12 Dec 2011 09:43:51 AM EET
+ * Last Modified : Thu 15 Dec 2011 04:24:23 PM EET
 
  * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -20,19 +20,19 @@
 
 using namespace std;
 
-static bool decide(int pivot);
-static vector<int> bookpages;
-static unsigned int books;
-static unsigned int writers;
+static bool decide(long long int pivot);
+static vector<long long int> bookpages;
+static unsigned long long int books;
+static unsigned long long int writers;
 
 int main()
 {
-    unsigned int i;
-    int pivot=0;
-    int top=0;
-    int maxelem;
-    int phigh=0;
-    int plow=0;
+    unsigned long long int i;
+    long long int pivot=0;
+    long long int top=0;
+    long long int maxelem;
+    long long int phigh=0;
+    long long int plow=0;
     cin >> books >> writers;
     bookpages.resize(books);
     for (i=0;i<books;i++)
@@ -40,7 +40,7 @@ int main()
     top=accumulate(bookpages.begin(),bookpages.end(),0);
     maxelem=*(max_element(bookpages.begin(),bookpages.end()));
     phigh=top;
-    plow=max((int)(top/books),maxelem);
+    plow=max((long long int)(top/books),maxelem);
     do
     {
         pivot=(phigh+plow)/2;
@@ -56,11 +56,11 @@ int main()
     return 0;
 }
 
-bool decide(int pivot)
+bool decide(long long int pivot)
 {
-    unsigned int i=0;
-    unsigned int j=0;
-    int buf=0;
+    unsigned long long int i=0;
+    unsigned long long int j=0;
+    long long int buf=0;
     for (i=0,j=0;i<writers;i++)
     {
         buf=0;
