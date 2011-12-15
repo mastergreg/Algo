@@ -6,7 +6,7 @@
 
 * Creation Date : 28-11-2011
 
-* Last Modified : Thu 15 Dec 2011 05:24:18 PM EET
+* Last Modified : Thu 15 Dec 2011 05:38:55 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -21,7 +21,6 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 using namespace std;
 
 int solve(vector<int> lefts,vector<int> rights,vector<int> sums);
-int getlefts(vector<int>::iterator it,vector<int>::iterator sumsstart,int len);
 int getrights(vector<int>::iterator it,vector<int>::reverse_iterator sumsstart,int len);
 
 int main()
@@ -32,6 +31,7 @@ int main()
     int max_days=0;
     int cr=0;
     int cl=0;
+    int curr=0;
     vector<int> temperatures;
     vector<int> lefts;
     vector<int> rights;
@@ -46,14 +46,22 @@ int main()
     scanf("%d",&temperatures[0]);
     //cin >> temperatures[0];
     temperatures[0]-=min_temp;
+    lefts[0]=0;
+    cl=1;
+    curr=temperatures[0];
     for (i=1;i<days;i++)
     {
         //cin >> temperatures[i];
         scanf("%d",&temperatures[i]);
         temperatures[i]-=min_temp;
         temperatures[i]+=temperatures[i-1];
+        if(temperatures[i]<curr)
+        {
+            curr=temperatures[i];
+            lefts[cl]=i;
+            cl++;
+        }
     }
-    cl=getlefts(lefts.begin(),temperatures.begin(),temperatures.size());
     lefts.erase(lefts.begin()+cl,lefts.end());
 
     cr=getrights(rights.begin(),temperatures.rbegin(),temperatures.size());
@@ -89,28 +97,6 @@ int solve(vector<int> lefts,vector<int> rights,vector<int> sums)
         }
     }
     return buf;
-}
-
-int getlefts(vector<int>::iterator it, vector<int>::iterator sumsstart,int sumslen)
-{
-    int i;
-    int lim=sumslen;
-    int curr=*sumsstart;
-    *it=0;
-    it++;
-    sumsstart++;
-    int c =1;
-    for(i=1;i<lim;i++,sumsstart++)
-    {
-        if(*sumsstart<curr)
-        {
-            curr=*sumsstart;
-            (*it)=i;
-            it++;
-            c++;
-        }
-    }
-    return c;
 }
 
 int getrights(vector<int>::iterator it, vector<int>::reverse_iterator sumsstart,int sumslen)
