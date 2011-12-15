@@ -7,12 +7,14 @@
 #
 #* Creation Date : 12-12-2011
 #
-#* Last Modified : Mon 12 Dec 2011 02:59:13 PM EET
+#* Last Modified : Thu 15 Dec 2011 07:38:44 AM EET
 #
 #* Created By : Greg Liras <gregliras@gmail.com>
 #
 #_._._._._._._._._._._._._._._._._._._._._.*/
 import sys
+import psyco
+psyco.full()
 
 bookpages=[]
 books=0
