@@ -7,7 +7,7 @@
 #
 #* Creation Date : 12-12-2011
 #
-#* Last Modified : Thu 15 Dec 2011 10:14:51 AM EET
+#* Last Modified : Thu 15 Dec 2011 10:32:54 AM EET
 #
 #* Created By : Greg Liras <gregliras@gmail.com>
 #
@@ -67,5 +67,5 @@ def main():
 
 
 if __name__=="__main__":
-  main()
+    main()
 
