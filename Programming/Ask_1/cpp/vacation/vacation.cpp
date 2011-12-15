@@ -6,7 +6,7 @@
 
 * Creation Date : 28-11-2011
 
-* Last Modified : Thu 15 Dec 2011 02:19:50 PM EET
+* Last Modified : Thu 15 Dec 2011 02:24:18 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -18,9 +18,6 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 #include <numeric>
 #include <cmath>
 
-#ifndef MAXA 
-#define MAXA 500000
-#endif
 using namespace std;
 
 int solve(vector<int> lefts,vector<int> rights,vector<int> sums);
