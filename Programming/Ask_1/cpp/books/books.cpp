@@ -6,13 +6,13 @@
 
  * Creation Date : 28-11-2011
 
- * Last Modified : Thu 15 Dec 2011 04:24:23 PM EET
+ * Last Modified : Thu 15 Dec 2011 05:09:20 PM EET
 
  * Created By : Greg Liras <gregliras@gmail.com>
 
  _._._._._._._._._._._._._._._._._._._._._.*/
 
-#include <iostream>
+#include <cstdio>
 #include <vector>
 #include <algorithm>
 #include <numeric>
@@ -20,27 +20,29 @@
 
 using namespace std;
 
-static bool decide(long long int pivot);
-static vector<long long int> bookpages;
-static unsigned long long int books;
-static unsigned long long int writers;
+static bool decide(int pivot);
+static vector<int> bookpages;
+static unsigned int books;
+static unsigned int writers;
 
 int main()
 {
-    unsigned long long int i;
-    long long int pivot=0;
-    long long int top=0;
-    long long int maxelem;
-    long long int phigh=0;
-    long long int plow=0;
-    cin >> books >> writers;
+    unsigned int i;
+    int pivot=0;
+    int top=0;
+    int maxelem;
+    int phigh=0;
+    int plow=0;
+    scanf("%d %d",&books,&writers);
+    //cin >> books >> writers;
     bookpages.resize(books);
     for (i=0;i<books;i++)
-        cin >> bookpages.at(i);
+        scanf("%d",&bookpages.at(i));
+        //cin >> bookpages.at(i);
     top=accumulate(bookpages.begin(),bookpages.end(),0);
     maxelem=*(max_element(bookpages.begin(),bookpages.end()));
     phigh=top;
-    plow=max((long long int)(top/books),maxelem);
+    plow=max((int)(top/books),maxelem);
     do
     {
         pivot=(phigh+plow)/2;
@@ -50,17 +52,19 @@ int main()
             plow=pivot;
     }while((phigh-plow)>1);
     if(decide(plow))
-        cout << plow << endl;
+        printf("%d\n",plow);
+        //cout << plow << endl;
     else
-        cout << phigh << endl;
+        printf("%d\n",phigh);
+        //cout << phigh << endl;
     return 0;
 }
 
-bool decide(long long int pivot)
+bool decide(int pivot)
 {
-    unsigned long long int i=0;
-    unsigned long long int j=0;
-    long long int buf=0;
+    unsigned int i=0;
+    unsigned int j=0;
+    int buf=0;
     for (i=0,j=0;i<writers;i++)
     {
         buf=0;
