@@ -6,7 +6,7 @@
 
 * Creation Date : 19-12-2011
 
-* Last Modified : Fri 30 Dec 2011 11:23:44 PM EET
+* Last Modified : Fri 30 Dec 2011 11:28:14 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -34,6 +34,7 @@ bool compare(const vector<int>& v1,const vector <int>& v2)
     }
     else
         return (v1[1] < v2[1] && v1[0]<=v2[0]) || (v1[1]==v2[1] && v1[0] <=v2[0]);
+
 }
 void fill_line(vector< vector< int > >::const_iterator abIt,
                             vector< int >& l1,vector< int >& l2)
@@ -55,7 +56,6 @@ void fill_line(vector< vector< int > >::const_iterator abIt,
         {
             (*itl2)=max(*itl1,*(itl2-1));
         }
-        
     }
 }
 int solveMe(const vector< vector <int> >& AB,int top)
