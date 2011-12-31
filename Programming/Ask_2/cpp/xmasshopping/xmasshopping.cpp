@@ -6,7 +6,7 @@
 
 * Creation Date : 19-12-2011
 
-* Last Modified : Sat 31 Dec 2011 04:18:31 AM EET
+* Last Modified : Sat 31 Dec 2011 06:58:23 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -31,6 +31,10 @@ int totdist(int i,int j,const vector<int>& prefix_sum_dists)
     int tdist=0;
     tdist = prefix_sum_dists.at(j)-prefix_sum_dists.at(i);
     return tdist;
+}
+int calculate_cost(int )
+{
+
 }
 
 void gen_mdists(const vector< vector<int> >& shops,vector<int>& mdists)
