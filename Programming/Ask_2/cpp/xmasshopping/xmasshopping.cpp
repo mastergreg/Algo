@@ -6,7 +6,7 @@
 
 * Creation Date : 19-12-2011
 
-* Last Modified : Thu 29 Dec 2011 12:34:02 AM EET
+* Last Modified : Sat 31 Dec 2011 04:18:31 AM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -26,45 +26,13 @@ int manhatan(const vector<int>& v1,const vector<int>& v2)
     return abs(v1[0]-v2[0])+abs(v1[1]-v2[1]);
 }
 
-int next(vector<int>& v1,vector<int>& v2,vector<int> dest)
-{
-    int m1 = manhatan(v1,dest);
-    int m2 = manhatan(v2,dest);
-    if(m1<m2)
-    {
-        v1[0]=dest[0];
-        v1[1]=dest[1];
-        return m1;
-    }
-    else
-    {
-        v2[0]=dest[0];
-        v2[1]=dest[1];
-        return m2;
-    }
-}
-int totdist(int i,int j,const vector<int>& mdists)
+int totdist(int i,int j,const vector<int>& prefix_sum_dists)
 {
     int tdist=0;
-    tdist = accumulate(mdists.begin()+i,mdists.begin()+j,0);
+    tdist = prefix_sum_dists.at(j)-prefix_sum_dists.at(i);
     return tdist;
 }
 
-int previous(   vector< vector < int > >::iterator it1,
-                vector< vector < int > >::iterator it2,
-                vector< vector < int > >::iterator dest)
-{
-    int m1 = manhatan(*it1,*dest);
-    int m2 = manhatan(*it2,*dest);
-    if(m2<m1)
-    {
-        return m2;
-    }
-    else
-    {
-        return m1;
-    }
-}
 void gen_mdists(const vector< vector<int> >& shops,vector<int>& mdists)
 {
     vector< vector<int> >::const_iterator itsh=shops.begin()+1;
@@ -77,7 +45,19 @@ void gen_mdists(const vector< vector<int> >& shops,vector<int>& mdists)
     }
     
 }
+int totalCost(int total_dist,int input_cost,int start,int finish,const vector<int>& prefix_sum_mh_dists)
+{
+    return total_dist-(prefix_sum_mh_dists[start]-prefix_sum_mh_dists[start-1])-(prefix_sum_mh_dists[finish]-prefix_sum_mh_dists[finish+1])+input_cost;
+}
+int solveMe(const vector<int>& s1,const vector<int>& s2,const vector< vector<int> >& shops,const vector<int>& p_sum_mdists)
+{
+    int total_dist=manhatan(s2,shops[0])+p_sum_mdists.back();
+    vector<int> line1(shops.size()+1,0);
+    vector<int> line2(shops.size()+1);
+    line1[0]=total_dist;
+    return total_dist;
 
+}
 
 int main(void)
 {
@@ -86,11 +66,11 @@ int main(void)
     int c=0;
     int nothing;
     int i;
-    int total_dist=0;
     vector< vector < int > > shops;
-    vector< int > XY1(2,0);
-    vector< int > XY2(2,0);
+    vector< int > s1(2,0);
+    vector< int > s2(2,0);
     vector< int > mdists;
+    vector< int > prefix_manthatan_distance_sums;
 
 
 
@@ -98,24 +78,21 @@ int main(void)
     nothing = scanf("%d %d %d",&n,&r,&c);
     shops.reserve(n);
     mdists.resize(n);
+    prefix_manthatan_distance_sums.resize(n+1);
+    prefix_manthatan_distance_sums[0]=0;
 
-    nothing = scanf("%d %d",&XY1[0],&XY1[1]);
-    nothing = scanf("%d %d",&XY2[0],&XY2[1]);
+    nothing = scanf("%d %d",&s1[0],&s1[1]);
+    nothing = scanf("%d %d",&s2[0],&s2[1]);
     for (i=0;i<n;i++)
     {
         shops.push_back(vector <int> (2));
         nothing = scanf("%d %d",&shops[i][0],&shops[i][1]);
     }
     gen_mdists(shops,mdists);
-    vector< vector<int> >::iterator shop;
-    for (shop=shops.begin(); shop!=shops.end(); shop++)
-    {
-        printf("%d (%d,%d) (%d,%d)\n",total_dist,XY1[0],XY1[1],XY2[0],XY1[1]);
-        total_dist+=next(XY1,XY2,*shop);
+    partial_sum(mdists.begin(),mdists.end(),prefix_manthatan_distance_sums.begin()+1);
 
-    }
-    printf("%d\n",total_dist);
-    printf("%d\n",totdist(0,n,mdists));
+    printf("%d\n",solveMe(s1,s2,shops,prefix_manthatan_distance_sums));
+
 
 
 }
