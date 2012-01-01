@@ -6,7 +6,7 @@
 
 * Creation Date : 19-12-2011
 
-* Last Modified : Sat 31 Dec 2011 06:58:23 PM EET
+* Last Modified : Sun 01 Jan 2012 07:16:11 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -32,13 +32,13 @@ int totdist(int i,int j,const vector<int>& prefix_sum_dists)
     tdist = prefix_sum_dists.at(j)-prefix_sum_dists.at(i);
     return tdist;
 }
-int calculate_cost(int )
-{
-
-}
 
 void gen_mdists(const vector< vector<int> >& shops,vector<int>& mdists)
 {
+    /* =========================== 
+     * Generate manthatan distances
+     * for every consecutive node
+     * =========================== */
     vector< vector<int> >::const_iterator itsh=shops.begin()+1;
     vector<int>::iterator itmd=mdists.begin();
     (*itmd)=0;
@@ -47,20 +47,27 @@ void gen_mdists(const vector< vector<int> >& shops,vector<int>& mdists)
     {
         (*itmd)=manhatan(*(itsh-1),*itsh);
     }
-    
 }
 int totalCost(int total_dist,int input_cost,int start,int finish,const vector<int>& prefix_sum_mh_dists)
 {
+    /* =========================== 
+     * Calculate total cost when 
+     * the part [start,finish]
+     * is given to the other list
+     * =========================== */
+
     return total_dist-(prefix_sum_mh_dists[start]-prefix_sum_mh_dists[start-1])-(prefix_sum_mh_dists[finish]-prefix_sum_mh_dists[finish+1])+input_cost;
 }
 int solveMe(const vector<int>& s1,const vector<int>& s2,const vector< vector<int> >& shops,const vector<int>& p_sum_mdists)
 {
+    /* =========================== 
+     * Main solving function
+     * =========================== */
     int total_dist=manhatan(s2,shops[0])+p_sum_mdists.back();
     vector<int> line1(shops.size()+1,0);
     vector<int> line2(shops.size()+1);
     line1[0]=total_dist;
     return total_dist;
-
 }
 
 int main(void)
@@ -75,10 +82,7 @@ int main(void)
     vector< int > s2(2,0);
     vector< int > mdists;
     vector< int > prefix_manthatan_distance_sums;
-
-
-
-
+    /* ==== GET INPUT ==== */
     nothing = scanf("%d %d %d",&n,&r,&c);
     shops.reserve(n);
     mdists.resize(n);
@@ -92,7 +96,9 @@ int main(void)
         shops.push_back(vector <int> (2));
         nothing = scanf("%d %d",&shops[i][0],&shops[i][1]);
     }
+    /* ==== GET INPUT ==== */
     gen_mdists(shops,mdists);
+    /* ==== prefix_sums of manhatan distances ==== */
     partial_sum(mdists.begin(),mdists.end(),prefix_manthatan_distance_sums.begin()+1);
 
     printf("%d\n",solveMe(s1,s2,shops,prefix_manthatan_distance_sums));
