@@ -6,7 +6,7 @@
 
 * Creation Date : 19-12-2011
 
-* Last Modified : Mon 02 Jan 2012 10:43:46 PM EET
+* Last Modified : Mon 02 Jan 2012 10:52:35 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -44,9 +44,9 @@ int solveMe(int n,int **shops)
 
     for(int i=n-1;i>=0;i--)
     {
+        next=min(n-1,i+1);
         for(int j=i-1;j>=0;j--)
         {
-            next=min(n-1,i+1);
             distances_i_next=manhatan(shops[next],shops[i]);
             distances_j_next=manhatan(shops[next],shops[j]);
             current_line[j]= min(distances_i_next+prev_line[j],
@@ -66,14 +66,17 @@ int main(void)
     int **shops;
     /* ==== GET INPUT ==== */
     nothing = scanf("%d %d %d",&n,&r,&c);
+    n+=2;
 
-    shops = new int*[n+2];
-    for (int i=0;i<n+2;i++)
+    shops = new int*[n];
+    for (int i=0;i<n;i++)
     {
         shops[i]=new int[2];
         nothing = scanf("%d %d",&shops[i][0],&shops[i][1]);
     }
-    printf("%d\n",solveMe(n+2,shops));
+    printf("%d\n",solveMe(n,shops));
+
+    return 0;
 
 }
 
