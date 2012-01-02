@@ -1,4 +1,4 @@
-CCFLAGS=-g
+CCFLAGS=-O2
 all:	xmasshopping
 xmasshopping:	xmasshopping.cpp
 	g++ xmasshopping.cpp -o xmasshopping ${CCFLAGS}
