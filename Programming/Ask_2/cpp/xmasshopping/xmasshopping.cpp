@@ -6,7 +6,7 @@
 
 * Creation Date : 19-12-2011
 
-* Last Modified : Mon 02 Jan 2012 09:36:44 PM EET
+* Last Modified : Mon 02 Jan 2012 09:40:59 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -42,18 +42,7 @@ int less(int n,vector< vector<int> >& shops)
         lessmatrix[i]=new int[n];
     }
     lessmatrix[n-1][n-1]=0;
-    //if(j==n-1 || i==n-1)
-    //{
-    //    return 0;
-    //}
-    //next=max(i,j)+1;
-    //    distances_i_next=manhatan(shops[next],shops[i]);
-    //    distances_j_next=manhatan(shops[next],shops[j]);
-    //if(lessmatrix[i][j]==-1)
-    //{
-    //    lessmatrix[i][j]= min(distances_i_next+less(next,j,n,shops,lessmatrix),
-    //            distances_j_next+less(next,i,n,shops,lessmatrix));
-    //}
+
     for(int i=n-1;i>=0;i--)
     {
         for(int j=n-1;j>=0;j--)
