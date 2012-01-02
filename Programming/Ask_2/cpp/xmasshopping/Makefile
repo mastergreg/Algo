@@ -1,4 +1,4 @@
-CCFLAGS=-Wall -Wextra -Wuninitialized -O3
+CCFLAGS=-g -Wall -Wextra -Wuninitialized
 all:	xmasshopping
 xmasshopping:	xmasshopping.cpp
 	g++ xmasshopping.cpp -o xmasshopping ${CCFLAGS}
