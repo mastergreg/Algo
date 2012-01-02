@@ -6,7 +6,7 @@
 
 * Creation Date : 19-12-2011
 
-* Last Modified : Mon 02 Jan 2012 05:30:50 PM EET
+* Last Modified : Mon 02 Jan 2012 06:13:05 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -20,6 +20,14 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 #include <numeric>
 
 using namespace std;
+
+/* needs to be ancestor matrix */
+struct node
+{
+    int index;
+    int father;
+    int cost;
+};
 
 int manhatan(const vector<int>& v1,const vector<int>& v2)
 {
@@ -54,49 +62,33 @@ void fill_line(int j,vector<int>& line1,vector<int>& line2,vector< vector<int> >
     }
 
 }
+
 int lesser(vector< vector<int> >& distances,vector< vector<int> >& shops)
 {
     int i,j,z;
     bool flag=true;
     int n = shops.size();
-    vector<int> line1(n,0);
-    vector<int> line2(n,0);
-    for (i=0;i<n;i++)
+    vector< vector<int> > lines(n,vector<int>(n,0));
+    
+    for(i=0;i<n;i++)
     {
-        distances[0][i]=manhatan(shops[0],shops[i]);
+        for (j=0;j<n;j++)
+        {
+            distances[i][j]=manhatan(shops[i],shops[j]);
+        }
     }
-    for (i=0;i<n;i++)
+    for(i=0;i<n;i++)
     {
-        distances[1][i]=manhatan(shops[1],shops[i]);
+        for (j=0;j<n;j++)
+        {
+            //lines[i][j]=min(distances[i-1]
+        }
     }
 
 
-    for(z=n-1;z>0;z--)
-    {
-        if(flag)
-        {
-            fill_line(z,line1,line2,distances,shops);
-        }
-        else
-        {
-            fill_line(z,line2,line1,distances,shops);
-        }
-        flag=!flag;
-        for(i=0;i<line1.size();i++)
-        {
-            printf("%d\t",line1[i]);
-        }
-        printf("\t\t");
-        for(i=0;i<line2.size();i++)
-        {
-            printf("%d\t",line2[i]);
-        }
-        printf("\n");
-    }
-    return min(line1.back(),line2.back());
 }
 
-int less(int i ,int j ,vector< vector<int> >& distances,vector< vector<int> >& shops)
+int less(int i ,int j ,vector< vector<int> >& distances,vector< vector<int> >& shops,vector< vector<int> >& lessmatrix)
 {
     int next;
     if(j==shops.size()-1 || i==shops.size()-1)
@@ -112,9 +104,12 @@ int less(int i ,int j ,vector< vector<int> >& distances,vector< vector<int> >& s
     {
         distances[j][next]=manhatan(shops[next],shops[j]);
     }
-    return min(distances[i][next]+less(next,j,distances,shops),
-                distances[j][next]+less(next,i,distances,shops));
-
+    if(lessmatrix[i][j]==-1)
+    {
+        lessmatrix[i][j]= min(distances[i][next]+less(next,j,distances,shops,lessmatrix),
+                distances[j][next]+less(next,i,distances,shops,lessmatrix));
+    }
+    return lessmatrix[i][j];
 }
 
 int main(void)
@@ -130,6 +125,8 @@ int main(void)
     /* ==== GET INPUT ==== */
     nothing = scanf("%d %d %d",&n,&r,&c);
     vector< vector < int > > distances(n+2,vector<int>(n+2,-1));
+    vector< vector < int > > lessmatrix(n+2,vector<int>(n+2,-1));
+    lessmatrix[n-1][n-1]=0;
     shops.reserve(n+2);
 
     //nothing = scanf("%d %d",&s1[0],&s1[1]);
@@ -150,7 +147,8 @@ int main(void)
     //partial_sum(mdists.begin(),mdists.end(),prefix_manthatan_distance_sums.begin()+1);
 
     //printf("%d\n",solveMe(s1,s2,shops,prefix_manthatan_distance_sums));
-    printf("%d\n",less(0,1,distances,shops));
+    printf("%d\n",less(0,1,distances,shops,lessmatrix));
+    //printf("%d\n",lesser(distances,shops));
 
 
 
