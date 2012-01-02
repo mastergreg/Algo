@@ -6,7 +6,7 @@
 
 * Creation Date : 19-12-2011
 
-* Last Modified : Mon 02 Jan 2012 02:16:23 PM EET
+* Last Modified : Mon 02 Jan 2012 05:30:50 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -30,80 +30,91 @@ int manhatan(const vector<int>& v1,const vector<int>& v2)
     return abs(v1[0]-v2[0])+abs(v1[1]-v2[1]);
 }
 
-inline void fill_layer_item(int z,vector< vector<int> >&layer1,vector< vector<int> >& layer2,vector< vector<int> >& distances,vector< vector<int> >& shops)
+void fill_line(int j,vector<int>& line1,vector<int>& line2,vector< vector<int> >& distances,vector< vector<int> >& shops) 
 {
-    unsigned int i,j;
-
-    printf("\nlevel %d \n",z-1);
-    for(i=0;i<layer2.size()-2;i++)
+    int i;
+    int prev;
+    for (i=2;i<line2.size();i++)
     {
-        if(distances[i][z]==-1)
+        /* ===============================
+         * I need the previous 
+         * consecutive node of i,j
+         * which will be either i=1 or j-1
+         * =============================== */
+        prev=min(i,j)-1;
+        if(distances[prev][i]==-1)
         {
-            distances[i][z]=manhatan(shops[i],shops[z]);
+            distances[prev][i]=manhatan(shops[prev],shops[i]);
         }
-        for(j=i+1;j<layer2.size()-1;j++)
+        if(distances[prev][j]==-1)
         {
-            if(distances[j][z]==-1)
-            {
-                distances[j][z]=manhatan(shops[j],shops[z]);
-            }
-            layer2[i][j]= layer1[i][j]+min(distances[i][z],distances[j][z]);
+            distances[prev][j]=manhatan(shops[prev],shops[j]);
         }
-    }
-    for(i=0;i<layer2.size();i++)
-    {
-        for(j=0;j<layer2.size();j++)
-        {
-            printf("%d\t",layer2[i][j]);
-        }
-        printf("\n");
+        line2[i]=min(distances[prev][i]+line2[prev],distances[prev][j]+line1[prev]);
     }
 
-    //printf("a:%d p:%d t:%d %d %d %d %d\n",above,prev,top,i,j,z,layer2[i][j]);
 }
-
 int lesser(vector< vector<int> >& distances,vector< vector<int> >& shops)
 {
     int i,j,z;
     bool flag=true;
     int n = shops.size();
-    vector< vector<int> > layer1(n,vector<int>(n,0));
-    vector< vector<int> > layer2(n,vector<int>(n,0));
+    vector<int> line1(n,0);
+    vector<int> line2(n,0);
     for (i=0;i<n;i++)
     {
         distances[0][i]=manhatan(shops[0],shops[i]);
-        layer1[0][i]=distances[0][i];
-        layer2[0][i]=distances[0][i];
     }
     for (i=0;i<n;i++)
     {
         distances[1][i]=manhatan(shops[1],shops[i]);
-        layer1[1][i]=distances[1][i];
-        layer2[1][i]=distances[1][i];
     }
 
 
-    for(z=n-1;z>1;z--)
+    for(z=n-1;z>0;z--)
     {
         if(flag)
         {
-            fill_layer_item(z,layer1,layer2,distances,shops);
+            fill_line(z,line1,line2,distances,shops);
         }
         else
         {
-            fill_layer_item(z,layer2,layer1,distances,shops);
+            fill_line(z,line2,line1,distances,shops);
         }
         flag=!flag;
-    }
-    for(i=0;i<n;i++)
-    {
-        for(j=0;j<n;j++)
+        for(i=0;i<line1.size();i++)
         {
-            printf("%d\t",layer1[i][j]);
+            printf("%d\t",line1[i]);
+        }
+        printf("\t\t");
+        for(i=0;i<line2.size();i++)
+        {
+            printf("%d\t",line2[i]);
         }
         printf("\n");
     }
-    return min(layer1.back().back(),layer2.back().back());
+    return min(line1.back(),line2.back());
+}
+
+int less(int i ,int j ,vector< vector<int> >& distances,vector< vector<int> >& shops)
+{
+    int next;
+    if(j==shops.size()-1 || i==shops.size()-1)
+    {
+        return 0;
+    }
+    next=max(i,j)+1;
+    if(distances[i][next]==-1)
+    {
+        distances[i][next]=manhatan(shops[next],shops[i]);
+    }
+    if(distances[j][next]==-1)
+    {
+        distances[j][next]=manhatan(shops[next],shops[j]);
+    }
+    return min(distances[i][next]+less(next,j,distances,shops),
+                distances[j][next]+less(next,i,distances,shops));
+
 }
 
 int main(void)
@@ -134,11 +145,12 @@ int main(void)
     /* ==== GET INPUT ==== */
     //generate_all_distances(shops,distances);
     //gen_mdists(shops,mdists);
+    
     /* ==== prefix_sums of manhatan distances ==== */
     //partial_sum(mdists.begin(),mdists.end(),prefix_manthatan_distance_sums.begin()+1);
 
     //printf("%d\n",solveMe(s1,s2,shops,prefix_manthatan_distance_sums));
-    printf("%d\n",lesser(distances,shops));
+    printf("%d\n",less(0,1,distances,shops));
 
 
 
