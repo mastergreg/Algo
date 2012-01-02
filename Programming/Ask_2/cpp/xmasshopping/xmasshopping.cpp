@@ -6,7 +6,7 @@
 
 * Creation Date : 19-12-2011
 
-* Last Modified : Mon 02 Jan 2012 09:40:59 PM EET
+* Last Modified : Mon 02 Jan 2012 10:43:46 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -18,12 +18,14 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 #include <algorithm>
 #include <vector>
 #include <numeric>
-
+#include <ostream>
+#include <iterator>
+#include <iostream>
 using namespace std;
 
 
 inline
-int manhatan(const vector<int>& v1,const vector<int>& v2)
+int manhatan(const int *v1,const int *v2)
 {
     /* =========================== 
      * Calculate manthatan 
@@ -32,30 +34,27 @@ int manhatan(const vector<int>& v1,const vector<int>& v2)
     return abs(v1[0]-v2[0])+abs(v1[1]-v2[1]);
 }
 
-int less(int n,vector< vector<int> >& shops)
+int solveMe(int n,int **shops)
 {
     int next;
     int distances_i_next,distances_j_next;
-    int **lessmatrix = new int*[n];
-    for(int i=0;i<n;i++)
-    {
-        lessmatrix[i]=new int[n];
-    }
-    lessmatrix[n-1][n-1]=0;
+    int *current_line = new int[n];
+    int *prev_line = new int[n];
+    prev_line[n-1]=0;
 
     for(int i=n-1;i>=0;i--)
     {
-        for(int j=n-1;j>=0;j--)
+        for(int j=i-1;j>=0;j--)
         {
-            next=min(n-1,max(i,j)+1);
+            next=min(n-1,i+1);
             distances_i_next=manhatan(shops[next],shops[i]);
             distances_j_next=manhatan(shops[next],shops[j]);
-            lessmatrix[i][j]= min(distances_i_next+lessmatrix[next][j],
-                    distances_j_next+lessmatrix[next][i]);
+            current_line[j]= min(distances_i_next+prev_line[j],
+                    distances_j_next+prev_line[i]);
         }
-
+        swap(current_line,prev_line);
     }
-    return lessmatrix[0][1];
+    return current_line[0];
 }
 
 int main(void)
@@ -64,29 +63,17 @@ int main(void)
     int r=0;
     int c=0;
     int nothing;
-    int i;
-    vector< vector < int > > shops;
-    //int **shops;
+    int **shops;
     /* ==== GET INPUT ==== */
     nothing = scanf("%d %d %d",&n,&r,&c);
-    vector< vector < int > > lessmatrix(n+2,vector<int>(n+2,-1));
-    lessmatrix[n-1][n-1]=0;
-    shops.reserve(n+2);
 
-    //nothing = scanf("%d %d",&s1[0],&s1[1]);
-    //nothing = scanf("%d %d",&s2[0],&s2[1]);
-    for (i=0;i<n+2;i++)
+    shops = new int*[n+2];
+    for (int i=0;i<n+2;i++)
     {
-        shops.push_back(vector <int> (2));
+        shops[i]=new int[2];
         nothing = scanf("%d %d",&shops[i][0],&shops[i][1]);
-        //ugly ugliness of ugly
     }
-
-    //printf("%d\n",solveMe(s1,s2,shops,prefix_manthatan_distance_sums));
-    printf("%d\n",less(n+2,shops));
-    //printf("%d\n",lesser(distances,shops));
-
-
+    printf("%d\n",solveMe(n+2,shops));
 
 }
 
