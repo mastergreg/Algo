@@ -6,7 +6,7 @@
 
 * Creation Date : 19-12-2011
 
-* Last Modified : Mon 02 Jan 2012 10:52:35 PM EET
+* Last Modified : Mon 02 Jan 2012 10:55:40 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -45,9 +45,9 @@ int solveMe(int n,int **shops)
     for(int i=n-1;i>=0;i--)
     {
         next=min(n-1,i+1);
+        distances_i_next=manhatan(shops[next],shops[i]);
         for(int j=i-1;j>=0;j--)
         {
-            distances_i_next=manhatan(shops[next],shops[i]);
             distances_j_next=manhatan(shops[next],shops[j]);
             current_line[j]= min(distances_i_next+prev_line[j],
                     distances_j_next+prev_line[i]);
