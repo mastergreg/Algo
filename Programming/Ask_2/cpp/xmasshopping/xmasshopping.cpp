@@ -6,7 +6,7 @@
 
 * Creation Date : 19-12-2011
 
-* Last Modified : Tue 03 Jan 2012 12:01:26 AM EET
+* Last Modified : Tue 03 Jan 2012 12:16:35 AM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -50,7 +50,7 @@ int solveMe(int n,int **shops)
         {
             distances_j_next = manhatan( shops[next] , shops[j] );
             current_line[j] = min( distances_i_next + prev_line[j],
-                    distances_j_next + prev_line[i] );
+                                    distances_j_next + prev_line[i] );
         }
         swap( current_line , prev_line );
     }
