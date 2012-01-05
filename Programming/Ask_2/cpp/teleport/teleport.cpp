@@ -6,7 +6,7 @@
 
  * Creation Date : 19-12-2011
 
- * Last Modified : Thu 05 Jan 2012 10:40:47 PM EET
+ * Last Modified : Thu 05 Jan 2012 10:50:14 PM EET
 
  * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -92,9 +92,9 @@ int getMaxAB(list<pair<int,int> >& ablist,list<pair<int,int> >& balist)
         {
             if(collides(*abit,*bait))
             {
-                cout << "bang"<< endl;
-                cout << abit->first << "\t->\t" << abit->second << endl;
-                cout << bait->second << "\t-<\t" << bait->first <<endl;
+                //cout << "bang"<< endl;
+                //cout << abit->first << "\t->\t" << abit->second << endl;
+                //cout << bait->second << "\t-<\t" << bait->first <<endl;
                 ans = max(ans,ab+ba);
                 break;
             }
@@ -131,9 +131,9 @@ int solveMe(int **ab,int abcnt,int ** ba,int bacnt)
     clean_overlapping(balist);
     //copy(ab,ab+abcnt,ablist);
 
-    for_each(ablist.begin(),ablist.end(),printEm);
-    cout << endl;
-    for_each(balist.begin(),balist.end(),printEm);
+    //for_each(ablist.begin(),ablist.end(),printEm);
+    //cout << endl;
+    //for_each(balist.begin(),balist.end(),printEm);
     return mergeEm(ablist,balist);
 }
 
