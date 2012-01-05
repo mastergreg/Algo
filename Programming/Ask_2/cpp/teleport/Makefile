@@ -1,4 +1,5 @@
-CCFLAGS=-Wall -Wextra -Wuninitialized -O3
+#CCFLAGS=-Wall -Wextra -Wuninitialized -O3
+CCFLAGS=-O3
 all:	teleport
 teleport:	teleport.cpp
 	g++ teleport.cpp -o teleport ${CCFLAGS}

@@ -1,119 +1,115 @@
 /* -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
 
-* File Name : teleport.cpp
+ * File Name : teleport.cpp
 
-* Purpose :
+ * Purpose :
 
-* Creation Date : 19-12-2011
+ * Creation Date : 19-12-2011
 
-* Last Modified : Fri 30 Dec 2011 11:28:14 PM EET
+ * Last Modified : Thu 05 Jan 2012 03:54:20 AM EET
 
-* Created By : Greg Liras <gregliras@gmail.com>
+ * Created By : Greg Liras <gregliras@gmail.com>
 
-_._._._._._._._._._._._._._._._._._._._._.*/
+ _._._._._._._._._._._._._._._._._._._._._.*/
 
 #include <cstdio>
 #include <cstdlib>
 #include <vector>
+#include <list>
 #include <algorithm>
+#include <utility>
 #include <set>
+#include <iostream>
+#include <ostream>
+#include <iterator>
+
 using namespace std;
-bool compare(const vector<int>& v1,const vector <int>& v2)
+bool compare(const int *v1,const int *v2)
 {
-    if(v1[0]>v1[1] && v2[0]>v2[1]) 
-        return v1[0] < v2[0] || (v1[0]==v2[0] && v1[1] < v2[1]);
-    else 
-        if(v1[0]>v1[1])
+    return !(v1[0] < v2[0] && v1[1] < v2[1]  || (v1[0]==v2[0] && v1[1] < v2[1]));
+}
+bool compare2(const int *v1,const int *v2)
+{
+    return !(v1[1] < v2[1] || (v1[1]==v2[1] && v1[0] < v2[0]));
+}
+void clean_overlapping(list< pair < int , int > >& alist)
+{
+    int prevs=0;
+    int preve=0;
+    for(list< pair<int , int> >::iterator it=alist.begin();it!=alist.end();++it)
     {
-        return false;
+        if(it->second<preve)
+        {
+            alist.remove(*it);
+            continue;
+        }
+        preve=it->second;
     }
-    else 
-        if(v2[0]>v2[1])
-    {
-        return true;
-    }
-    else
-        return (v1[1] < v2[1] && v1[0]<=v2[0]) || (v1[1]==v2[1] && v1[0] <=v2[0]);
+
 
 }
-void fill_line(vector< vector< int > >::const_iterator abIt,
-                            vector< int >& l1,vector< int >& l2)
+int solveMe(int **ab,int abcnt,int ** ba,int bacnt)
 {
-    int i;
-    int start = (*abIt)[0];
-    int finish = (*abIt)[1];
-    int inc=min(start,finish);
-    vector< int >::iterator itl1,itl2;
-    itl1=l1.begin()+1;
-    itl2=l2.begin()+1;
-    for(i=0;itl1!=l1.end() && itl2!=l2.end();itl1++,itl2++,i++)
-    {
-        if(i==inc)
-        {
-            (*itl2)=max(*itl1,*(itl2-1))+1;
-        }
-        else
-        {
-            (*itl2)=max(*itl1,*(itl2-1));
-        }
-    }
+
+    list< pair <int , int> > ablist; 
+    list< pair <int , int> > balist; 
+    for(int i=0;i<abcnt;i++)
+        ablist.push_back(pair<int,int>(ab[i][0],ab[i][1]));
+    for(int i=0;i<bacnt;i++)
+        balist.push_back(pair<int,int>(ba[i][0],ba[i][1]));
+    clean_overlapping(ablist);
+    clean_overlapping(balist);
+
+    //copy(ab,ab+abcnt,ablist);
+    return 0;
 }
-int solveMe(const vector< vector <int> >& AB,int top)
-{
-    vector< vector<int> >::const_iterator abIt;
-
-    vector< vector<int> > dyn_line;
-    dyn_line.reserve(2);
-    dyn_line.push_back(vector<int>(top+1,0));
-    dyn_line.push_back(vector<int>(top+1,0));
-
-    //dyn_line[0].resize(top+1);
-    //dyn_line[1].resize(top+1);
-
-    int i;
-    int j;
-
-    for(i=0,j=1,abIt=AB.begin();abIt!=AB.end();abIt++)
-    {
-        fill_line(abIt,dyn_line[i],dyn_line[j]);
-        if(i)
-        {
-            i=0;
-            j=1;
-        }
-        else
-        {
-            i=1;
-            j=0;
-        }
-    }
-    return max(dyn_line[0].back(),dyn_line[1].back());
-
-}
-
 int main()
 {
     int scientists=0;
     int nothing;
     int toplimit=0;
-    vector< vector < int > > AB;
+    int **AB;
+    int ABcnt=-1;
+    int **BA;
+    int BAcnt=-1;
+    int buf0,buf1;
 
     nothing = scanf("%d",&scientists);
+    AB=new int*[scientists];
+    BA=new int*[scientists];
 
-    AB.resize(scientists);
-    
-    vector< vector<int> >::iterator ABit;
-    for(ABit=AB.begin();ABit!=AB.end();ABit++)
+
+    for(int i=0;i<scientists;i++)
     {
-        ABit->resize(2);
-        nothing = scanf("%d %d",&(*ABit)[0],&(*ABit)[1]);
-        toplimit=max((*ABit)[0],toplimit);
-        toplimit=max((*ABit)[1],toplimit);
+        nothing = scanf("%d %d",&buf0,&buf1);
+        if(buf0>buf1)
+        {
+            AB[++ABcnt]=new int[2];
+            AB[ABcnt][0]=buf0;
+            AB[ABcnt][1]=buf1;
+        }
+        else
+        {
+            BA[++BAcnt]=new int[2];
+            BA[BAcnt][0]=buf0;
+            BA[BAcnt][1]=buf1;
+        }
+        toplimit=max(buf0,toplimit);
+        toplimit=max(buf1,toplimit);
     }
 
-    sort(AB.begin(),AB.end(),compare);
-    printf("solved: %d\n",solveMe(AB,toplimit));
+    sort(AB,AB+ABcnt,compare);
+    for (int i=0;i<ABcnt;i++)
+    {
+        printf("%d\t>\t%d\n",AB[i][0],AB[i][1]);
+    }
+    sort(BA,BA+BAcnt,compare2);
+    for (int i=0;i<BAcnt;i++)
+    {
+        printf("%d\t<\t%d\n",BA[i][0],BA[i][1]);
+    }
+    printf("solved: %d\n",solveMe(AB,ABcnt,BA,BAcnt));
 
 
-    exit(0);
+    return 0;
 }

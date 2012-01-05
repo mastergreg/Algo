@@ -6,7 +6,7 @@
 
 * Creation Date : 19-12-2011
 
-* Last Modified : Tue 03 Jan 2012 12:16:35 AM EET
+* Last Modified : Wed 04 Jan 2012 09:24:33 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -39,6 +39,7 @@ int solveMe(int n,int **shops)
     int next;
     int distances_i_next;
     int distances_j_next;
+    int result;
     int *current_line = new int[n];
     int *prev_line = new int[n];
     prev_line[n-1] = 0;
@@ -54,7 +55,11 @@ int solveMe(int n,int **shops)
         }
         swap( current_line , prev_line );
     }
-    return current_line[0];
+
+    result = current_line[0];
+    delete[] current_line;
+    delete[] prev_line;
+    return result;
 }
 
 int main(void)
