@@ -6,7 +6,7 @@
 
  * Creation Date : 19-12-2011
 
- * Last Modified : Thu 05 Jan 2012 09:36:06 PM EET
+ * Last Modified : Thu 05 Jan 2012 09:39:52 PM EET
 
  * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -98,16 +98,8 @@ int getMaxAB(list<pair<int,int> >& ablist,list<pair<int,int> >& balist)
 int mergeEm(list<pair<int,int> >& ablist,list<pair<int,int> >& balist)
 {
     int ans;
-    if(ablist.size()>balist.size())
-    {
-        ans=ablist.size();
-        ans=max(ans,getMaxAB(ablist,balist));
-    }
-    else
-    {
-        ans=balist.size();
-        ans=max(ans,getMaxAB(ablist,balist));
-    }
+    ans=max(ablist.size(),balist.size());
+    ans=max(ans,getMaxAB(ablist,balist));
     return ans;
 }
 
