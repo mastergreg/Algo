@@ -6,7 +6,7 @@
 
  * Creation Date : 19-12-2011
 
- * Last Modified : Thu 05 Jan 2012 09:39:52 PM EET
+ * Last Modified : Thu 05 Jan 2012 10:40:47 PM EET
 
  * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -44,9 +44,14 @@ void clean_overlapping(list< pair < int , int > >& alist)
      */
     int prevs=0;
     int preve=0;
-    for(list< pair<int , int> >::iterator it=alist.begin();it!=alist.end();++it)
+    list< pair<int , int> >::iterator it=alist.begin();
+    prevs=it->first;
+    preve=it->second;
+    it++;
+    for(;it!=alist.end();++it)
     {
-        if(it->second > preve && it->first < prevs)
+        if((it->second > it->first && it->second > preve && it->first < prevs)
+                || (it->second < it->first && it->second < preve && it->first > prevs))
         {
             /*
              * This is not safe
@@ -69,7 +74,8 @@ bool collides(pair<int,int>& abelem,pair<int,int>& baelem)
      * [ -> ]       ||       [ -> ]
      *    [ <- ]    ||    [ <- ]
      */
-    return abelem.first < baelem.second || abelem.second > baelem.first;
+    return (abelem.second > baelem.second && abelem.second < baelem.first) \
+        || (abelem.first < baelem.first && abelem.second > baelem.first);
 }
 
 int getMaxAB(list<pair<int,int> >& ablist,list<pair<int,int> >& balist)
@@ -86,11 +92,14 @@ int getMaxAB(list<pair<int,int> >& ablist,list<pair<int,int> >& balist)
         {
             if(collides(*abit,*bait))
             {
+                cout << "bang"<< endl;
+                cout << abit->first << "\t->\t" << abit->second << endl;
+                cout << bait->second << "\t-<\t" << bait->first <<endl;
+                ans = max(ans,ab+ba);
                 break;
             }
 
         }
-        ans = max(ans,ab+ba);
     }
     return ans;
 }
@@ -122,9 +131,9 @@ int solveMe(int **ab,int abcnt,int ** ba,int bacnt)
     clean_overlapping(balist);
     //copy(ab,ab+abcnt,ablist);
 
-    //for_each(ablist.begin(),ablist.end(),printEm);
-    //cout << endl;
-    //for_each(balist.begin(),balist.end(),printEm);
+    for_each(ablist.begin(),ablist.end(),printEm);
+    cout << endl;
+    for_each(balist.begin(),balist.end(),printEm);
     return mergeEm(ablist,balist);
 }
 
@@ -152,7 +161,7 @@ int main()
     for(int i=0;i<scientists;i++)
     {
         nothing = scanf("%d %d",&buf0,&buf1);
-        if(buf0>buf1)
+        if(buf0<buf1)
         {
 
             AB[++ABcnt]=new int[2];

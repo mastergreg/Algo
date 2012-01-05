@@ -1,5 +1,5 @@
 #CCFLAGS=-Wall -Wextra -Wuninitialized -O3
-CC=c++
+CC=g++
 CCFLAGS=-g
 all:	teleport
 teleport:	teleport.cpp
