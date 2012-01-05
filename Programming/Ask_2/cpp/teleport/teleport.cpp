@@ -6,7 +6,7 @@
 
  * Creation Date : 19-12-2011
 
- * Last Modified : Thu 05 Jan 2012 04:23:06 AM EET
+ * Last Modified : Thu 05 Jan 2012 09:36:06 PM EET
 
  * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -24,37 +24,102 @@
 #include <iterator>
 
 using namespace std;
+
 bool compare(const int *v1,const int *v2)
 {
-    return !(v1[0] < v2[0] && v1[1] < v2[1]  || (v1[0]==v2[0] && v1[1] < v2[1]));
+    return !( (v1[0] < v2[0] )  || (v1[0]==v2[0] && v1[1] < v2[1]));
 }
+
 bool compare2(const int *v1,const int *v2)
 {
-    return !(v1[1] < v2[1] || (v1[1]==v2[1] && v1[0] < v2[0]));
+    return !( (v1[1] < v2[1] ) || (v1[1]==v2[1] && v1[0] < v2[0]));
 }
+
 void clean_overlapping(list< pair < int , int > >& alist)
 {
+    /*
+     * compare each element
+     * with the ending of the previous one
+     * and remove those that overlap
+     */
     int prevs=0;
     int preve=0;
     for(list< pair<int , int> >::iterator it=alist.begin();it!=alist.end();++it)
     {
-        if(it->second<preve)
+        if(it->second > preve && it->first < prevs)
         {
-            alist.remove(*it);
+            /*
+             * This is not safe
+             * need to implement it better
+             * but it's fine for now.
+             */
+            alist.erase(it);
+            it--;
             continue;
         }
         preve=it->second;
+        prevs=it->first;
     }
-
-
 }
-int mergeEm(list<pair<int,int> > ablist,list<pair<int,int> > balist)
-{
 
+inline
+bool collides(pair<int,int>& abelem,pair<int,int>& baelem)
+{
+    /*
+     * [ -> ]       ||       [ -> ]
+     *    [ <- ]    ||    [ <- ]
+     */
+    return abelem.first < baelem.second || abelem.second > baelem.first;
+}
+
+int getMaxAB(list<pair<int,int> >& ablist,list<pair<int,int> >& balist)
+{
+    int ans=0;
+    list<pair<int,int> >::reverse_iterator bait;
+    list<pair<int,int> >::iterator abit;
+    int ba;
+    int ab;
+    for(ba=balist.size(),ab=0,bait=balist.rbegin(),abit=ablist.begin();
+            bait!=balist.rend();bait++,ba--)
+    {
+        for(;abit!=ablist.end();abit++,ab++)
+        {
+            if(collides(*abit,*bait))
+            {
+                break;
+            }
+
+        }
+        ans = max(ans,ab+ba);
+    }
+    return ans;
+}
+
+int mergeEm(list<pair<int,int> >& ablist,list<pair<int,int> >& balist)
+{
+    int ans;
+    if(ablist.size()>balist.size())
+    {
+        ans=ablist.size();
+        ans=max(ans,getMaxAB(ablist,balist));
+    }
+    else
+    {
+        ans=balist.size();
+        ans=max(ans,getMaxAB(ablist,balist));
+    }
+    return ans;
+}
+
+void printEm(pair<int,int> & p)
+{
+    cout << p.first << "\t" << p.second << endl;
 }
 int solveMe(int **ab,int abcnt,int ** ba,int bacnt)
 {
-
+    /*
+     * Main solving function
+     */
     list< pair <int , int> > ablist; 
     list< pair <int , int> > balist; 
     for(int i=0;i<abcnt;i++)
@@ -63,12 +128,19 @@ int solveMe(int **ab,int abcnt,int ** ba,int bacnt)
         balist.push_back(pair<int,int>(ba[i][0],ba[i][1]));
     clean_overlapping(ablist);
     clean_overlapping(balist);
-
     //copy(ab,ab+abcnt,ablist);
-    return 0;
+
+    //for_each(ablist.begin(),ablist.end(),printEm);
+    //cout << endl;
+    //for_each(balist.begin(),balist.end(),printEm);
+    return mergeEm(ablist,balist);
 }
+
 int main()
 {
+    /*
+     * Variables
+     */
     int scientists=0;
     int nothing;
     int toplimit=0;
@@ -82,36 +154,33 @@ int main()
     AB=new int*[scientists];
     BA=new int*[scientists];
 
-
+    /*
+     * Get input
+     */
     for(int i=0;i<scientists;i++)
     {
         nothing = scanf("%d %d",&buf0,&buf1);
         if(buf0>buf1)
         {
+
             AB[++ABcnt]=new int[2];
             AB[ABcnt][0]=buf0;
             AB[ABcnt][1]=buf1;
+
         }
         else
         {
             BA[++BAcnt]=new int[2];
             BA[BAcnt][0]=buf0;
             BA[BAcnt][1]=buf1;
+
         }
         toplimit=max(buf0,toplimit);
         toplimit=max(buf1,toplimit);
     }
 
-    sort(AB,AB+ABcnt,compare);
-    for (int i=0;i<ABcnt;i++)
-    {
-        printf("%d\t>\t%d\n",AB[i][0],AB[i][1]);
-    }
-    sort(BA,BA+BAcnt,compare2);
-    for (int i=0;i<BAcnt;i++)
-    {
-        printf("%d\t<\t%d\n",BA[i][0],BA[i][1]);
-    }
+    sort(AB,AB+(++ABcnt),compare2);
+    sort(BA,BA+(++BAcnt),compare);
     printf("solved: %d\n",solveMe(AB,ABcnt,BA,BAcnt));
 
 

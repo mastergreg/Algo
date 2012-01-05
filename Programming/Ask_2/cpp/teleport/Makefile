@@ -1,8 +1,9 @@
 #CCFLAGS=-Wall -Wextra -Wuninitialized -O3
-CCFLAGS=-O3
+CC=c++
+CCFLAGS=-g
 all:	teleport
 teleport:	teleport.cpp
-	g++ teleport.cpp -o teleport ${CCFLAGS}
+	$(CC) teleport.cpp -o teleport ${CCFLAGS}
 clean:
 	rm teleport
 tests:
