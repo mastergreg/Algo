@@ -6,7 +6,7 @@
 
  * Creation Date : 19-12-2011
 
- * Last Modified : Thu 05 Jan 2012 03:54:20 AM EET
+ * Last Modified : Thu 05 Jan 2012 04:23:06 AM EET
 
  * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -46,6 +46,10 @@ void clean_overlapping(list< pair < int , int > >& alist)
         preve=it->second;
     }
 
+
+}
+int mergeEm(list<pair<int,int> > ablist,list<pair<int,int> > balist)
+{
 
 }
 int solveMe(int **ab,int abcnt,int ** ba,int bacnt)
