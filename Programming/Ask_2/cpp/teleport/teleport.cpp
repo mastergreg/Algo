@@ -6,7 +6,7 @@
 
  * Creation Date : 19-12-2011
 
- * Last Modified : Fri 06 Jan 2012 02:57:37 AM EET
+ * Last Modified : Fri 06 Jan 2012 04:15:03 AM EET
 
  * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -123,8 +123,9 @@ int getMaxAB(list<pair<int,int> >& ablist,list<pair<int,int> >& balist)
     int ans=0;
     list<pair<int,int> >::reverse_iterator abit=ablist.rbegin();
     list<pair<int,int> >::reverse_iterator bait=balist.rbegin();
-    int ba;
-    int ab;
+    list<pair<int,int> >::reverse_iterator k,m;
+    int cr;
+    int cl;
     while(noCollision(*abit,*bait) && abit!=ablist.rend() && bait!=balist.rend())
     {
         ans++;
@@ -141,6 +142,43 @@ int getMaxAB(list<pair<int,int> >& ablist,list<pair<int,int> >& balist)
             bait++;
         }
     }
+    cl=0;
+    cr=0;
+    k=abit;
+    k++;
+    m=bait;
+    m++;
+    /*
+     * Dragon hunter
+     */
+    if(bait->second>=abit->first)
+    {
+        while(k->second < abit->second)
+        {
+            k++;
+            cr++;
+        }
+        while(bait->first > m->first)
+        {
+            m++;
+            cl++;
+        }
+        ans++;
+        if (cr > cl )
+        {
+            abit++;
+            bait=k;
+        }
+        else
+        {
+            bait++;
+            abit=m;
+        }
+    }
+
+
+
+    
 
     return ans;
 }
