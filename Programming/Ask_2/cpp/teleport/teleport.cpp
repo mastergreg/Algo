@@ -6,7 +6,7 @@
 
  * Creation Date : 19-12-2011
 
- * Last Modified : Fri 06 Jan 2012 04:44:27 AM EET
+ * Last Modified : Fri 06 Jan 2012 06:12:09 AM EET
 
  * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -144,45 +144,32 @@ int getMaxAB(list<pair<int,int> >& rights_list,list<pair<int,int> >& lefts_list)
     }
     cl=0;
     cr=0;
-    k=rights_iter;
+    k=lefts_iter;
     k++;
-    m=lefts_iter;
+    m=rights_iter;
     m++;
+
     /*
-     * Dragon hunter
-     *
-                                       /   \
-     _                         )      ((   ))     (
-     (@)                      /|\      ))_((     /|\
-     |-|                     / | \    (/\|/\)   / | \                      (@)
-     | | -------------------/--|-voV---\`|'/--Vov-|--\---------------------|-|
-     |-|                         '^`   (o o)  '^`                          | |
-     | |                               `\Y/'                               |-|
-     |-|                                                                   | |
-     | |                       Let the hunt begin!!!!!                     |-|
-     |-|                                                                   | |
-     | |                                                                   |-|
-     |_|___________________________________________________________________| |
-     (@)              l   /\ /         ( (       \ /\   l                `\|-|
-                      l /   V           \ \       V   \ l                  (@)
-                      l/                _) )_          \I
-                                        `\ /'
-                                          `  Jeff Ferris
+     * Check for type A collisions
      */
-    if(lefts_iter->second>=rights_iter->first)
+
+    if(collidesA(rights_iter,lefts_iter))
     {
-        while(k->second < rights_iter->second)
+        while(collidesA(rights_iter,k))
         {
             k++;
             cr++;
         }
-        while(lefts_iter->first > m->first)
+        while(collidesA(m,lefts_iter))
         {
             m++;
             cl++;
         }
         ans++;
-        if (cr > cl )
+        /*
+         * Pick the one with the least collisions
+         */
+        if(cr>cl)
         {
             rights_iter++;
             lefts_iter=k;
@@ -194,9 +181,34 @@ int getMaxAB(list<pair<int,int> >& rights_list,list<pair<int,int> >& lefts_list)
         }
     }
 
+    /*
+     * Check for type B collisions
+     */
 
-
-    
+    else if(collidesB(rights_iter,lefts_iter))
+    {
+        while(collidesB(rights_iter,k))
+        {
+            k++;
+            cr++;
+        }
+        while(collidesB(m,lefts_iter))
+        {
+            m++;
+            cl++;
+        }
+        ans++;
+        if(cr>cl)
+        {
+            rights_iter++;
+            lefts_iter=k;
+        }
+        else
+        {
+            lefts_iter++;
+            rights_iter=m;
+        }
+    }
 
     return ans;
 }
