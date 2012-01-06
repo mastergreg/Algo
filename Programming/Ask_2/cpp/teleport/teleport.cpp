@@ -6,7 +6,7 @@
 
  * Creation Date : 19-12-2011
 
- * Last Modified : Fri 06 Jan 2012 02:51:33 AM EET
+ * Last Modified : Fri 06 Jan 2012 02:57:37 AM EET
 
  * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -115,24 +115,33 @@ bool noCollision(pair<int,int>& abelem,pair<int,int>& baelem)
      * [ -> ]         ||        [ -> ]      = abelem
      *        [ <- ]  || [ <- ]             = baelem
      */
-    return (abelem.second <= baelem.second || abelem.first > baelem.first);
+    return (abelem.second <= baelem.second || abelem.first >= baelem.first);
 }
 
 int getMaxAB(list<pair<int,int> >& ablist,list<pair<int,int> >& balist)
 {
     int ans=0;
-    list<pair<int,int> >::reverse_iterator abit;
-    list<pair<int,int> >::reverse_iterator bait;
+    list<pair<int,int> >::reverse_iterator abit=ablist.rbegin();
+    list<pair<int,int> >::reverse_iterator bait=balist.rbegin();
     int ba;
     int ab;
-    for(ba=balist.size(),bait=balist.rbegin(),abit=ablist.rbegin();
-            bait!=balist.rend();bait++,ba--)
+    while(noCollision(*abit,*bait) && abit!=ablist.rend() && bait!=balist.rend())
     {
-        for(ab=0;abit!=ablist.rend();abit++,ab++)
+        ans++;
+        /*
+         * increase the one 
+         * which is on the left
+         */
+        if(abit->second <= bait->second)
         {
-                ans =max(ans, ba+ab);
+            abit++;
+        }
+        else
+        {
+            bait++;
         }
     }
+
     return ans;
 }
 
