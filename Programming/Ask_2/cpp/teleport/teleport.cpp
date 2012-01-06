@@ -6,7 +6,7 @@
 
  * Creation Date : 19-12-2011
 
- * Last Modified : Fri 06 Jan 2012 06:12:09 AM EET
+ * Last Modified : Fri 06 Jan 2012 02:21:57 PM EET
 
  * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -126,89 +126,94 @@ int getMaxAB(list<pair<int,int> >& rights_list,list<pair<int,int> >& lefts_list)
     list<pair<int,int> >::reverse_iterator k,m;
     int cr;
     int cl;
-    while(noCollision(*rights_iter,*lefts_iter) && rights_iter!=rights_list.rend() && lefts_iter!=lefts_list.rend())
+    do
     {
-        ans++;
+        while(noCollision(*rights_iter,*lefts_iter) && rights_iter!=rights_list.rend() && lefts_iter!=lefts_list.rend())
+        {
+            ans++;
+            /*
+             * increase the one 
+             * which is on the left
+             */
+            if(rights_iter->second <= lefts_iter->second)
+            {
+                rights_iter++;
+                cout << "increase right" << endl;
+            }
+            else
+            {
+                lefts_iter++;
+                cout << "increase left" << endl;
+            }
+        }
+        cl=0;
+        cr=0;
+        k=lefts_iter;
+        k++;
+        m=rights_iter;
+        m++;
+
         /*
-         * increase the one 
-         * which is on the left
+         * Check for type A collisions
          */
-        if(rights_iter->second <= lefts_iter->second)
-        {
-            rights_iter++;
-        }
-        else
-        {
-            lefts_iter++;
-        }
-    }
-    cl=0;
-    cr=0;
-    k=lefts_iter;
-    k++;
-    m=rights_iter;
-    m++;
 
-    /*
-     * Check for type A collisions
-     */
+        if(collidesA(*rights_iter,*lefts_iter))
+        {
+            while(k != lefts_list.rend() && collidesA(*rights_iter,*k))
+            {
+                k++;
+                cr++;
+            }
+            while(m != rights_list.rend() && collidesA(*m,*lefts_iter))
+            {
+                m++;
+                cl++;
+            }
+            ans++;
+            /*
+             * Pick the one with the least collisions
+             */
+            if(cr>cl)
+            {
+                rights_iter++;
+            }
+            else
+            {
+                lefts_iter++;
+            }
+        }
 
-    if(collidesA(rights_iter,lefts_iter))
-    {
-        while(collidesA(rights_iter,k))
-        {
-            k++;
-            cr++;
-        }
-        while(collidesA(m,lefts_iter))
-        {
-            m++;
-            cl++;
-        }
-        ans++;
         /*
-         * Pick the one with the least collisions
+         * Check for type B collisions
          */
-        if(cr>cl)
+
+        else if(collidesB(*rights_iter,*lefts_iter))
         {
-            rights_iter++;
-            lefts_iter=k;
-        }
-        else
-        {
-            lefts_iter++;
-            rights_iter=m;
+            /*
+             * adding some sanity checking
+             */
+            while(k != lefts_list.rend() && collidesB(*rights_iter,*k))
+            {
+                k++;
+                cr++;
+            }
+            while(m != rights_list.rend() && collidesB(*m,*lefts_iter))
+            {
+                m++;
+                cl++;
+            }
+            ans++;
+            if(cr>cl)
+            {
+                rights_iter++;
+            }
+            else
+            {
+                lefts_iter++;
+            }
         }
     }
-
-    /*
-     * Check for type B collisions
-     */
-
-    else if(collidesB(rights_iter,lefts_iter))
-    {
-        while(collidesB(rights_iter,k))
-        {
-            k++;
-            cr++;
-        }
-        while(collidesB(m,lefts_iter))
-        {
-            m++;
-            cl++;
-        }
-        ans++;
-        if(cr>cl)
-        {
-            rights_iter++;
-            lefts_iter=k;
-        }
-        else
-        {
-            lefts_iter++;
-            rights_iter=m;
-        }
-    }
+    while(rights_iter++ != rights_list.rend() && lefts_iter++ != lefts_list.rend());
 
     return ans;
 }
@@ -217,7 +222,7 @@ int mergeEm(list<pair<int,int> >& rights_list,list<pair<int,int> >& lefts_list)
 {
     int ans;
     ans=max(rights_list.size(),lefts_list.size());
-    ans=max(ans,getMaxAB(rights_list,lefts_list));
+    ans=getMaxAB(rights_list,lefts_list);
     return ans;
 }
 
