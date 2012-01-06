@@ -6,7 +6,7 @@
 
  * Creation Date : 19-12-2011
 
- * Last Modified : Fri 06 Jan 2012 04:15:03 AM EET
+ * Last Modified : Fri 06 Jan 2012 04:29:27 AM EET
 
  * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -68,97 +68,97 @@ void clean_overlapping(list< pair < int , int > >& alist)
 }
 
 inline
-bool collidesA(pair<int,int>& abelem,pair<int,int>& baelem)
+bool collidesA(pair<int,int>& rights_elem,pair<int,int>& lefts_elem)
 {
     /*
-     * [ -> ]       = abelem
-     *    [ <- ]    = baelem
+     * [ -> ]       = rights_elem
+     *    [ <- ]    = lefts_elem
      */
-    return (abelem.second > baelem.second && abelem.second < baelem.first);
+    return (rights_elem.second > lefts_elem.second && rights_elem.second < lefts_elem.first);
 
 }
 
 inline
-bool collidesB(pair<int,int>& abelem,pair<int,int>& baelem)
+bool collidesB(pair<int,int>& rights_elem,pair<int,int>& lefts_elem)
 {
     /*
-     *    [ -> ]    = abelem
-     * [ <- ]       = baelem
+     *    [ -> ]    = rights_elem
+     * [ <- ]       = lefts_elem
      */
-    return (abelem.first < baelem.first && abelem.second > baelem.first);
+    return (rights_elem.first < lefts_elem.first && rights_elem.second > lefts_elem.first);
 }
 
 inline
-bool collidesC(pair<int,int>& abelem,pair<int,int>& baelem)
+bool collidesC(pair<int,int>& rights_elem,pair<int,int>& lefts_elem)
 {
     /*
-     *    [ -> ]    = abelem
-     * [    <-   ]  = baelem
+     *    [ -> ]    = rights_elem
+     * [    <-   ]  = lefts_elem
      */
-    return (abelem.first < baelem.second && abelem.second < baelem.first);
+    return (rights_elem.first < lefts_elem.second && rights_elem.second < lefts_elem.first);
 }
 
 inline
-bool collidesD(pair<int,int>& abelem,pair<int,int>& baelem)
+bool collidesD(pair<int,int>& rights_elem,pair<int,int>& lefts_elem)
 {
     /*
-     * [    ->    ] = abelem
-     *    [ <- ]    = baelem
+     * [    ->    ] = rights_elem
+     *    [ <- ]    = lefts_elem
      */
-    return (abelem.first > baelem.second && abelem.second > baelem.first);
+    return (rights_elem.first > lefts_elem.second && rights_elem.second > lefts_elem.first);
 }
 
 inline
-bool noCollision(pair<int,int>& abelem,pair<int,int>& baelem)
+bool noCollision(pair<int,int>& rights_elem,pair<int,int>& lefts_elem)
 {
     /*                                    
-     * [ -> ]         ||        [ -> ]      = abelem
-     *        [ <- ]  || [ <- ]             = baelem
+     * [ -> ]         ||        [ -> ]      = rights_elem
+     *        [ <- ]  || [ <- ]             = lefts_elem
      */
-    return (abelem.second <= baelem.second || abelem.first >= baelem.first);
+    return (rights_elem.second <= lefts_elem.second || rights_elem.first >= lefts_elem.first);
 }
 
-int getMaxAB(list<pair<int,int> >& ablist,list<pair<int,int> >& balist)
+int getMaxAB(list<pair<int,int> >& rights_list,list<pair<int,int> >& lefts_list)
 {
     int ans=0;
-    list<pair<int,int> >::reverse_iterator abit=ablist.rbegin();
-    list<pair<int,int> >::reverse_iterator bait=balist.rbegin();
+    list<pair<int,int> >::reverse_iterator rights_iter=rights_list.rbegin();
+    list<pair<int,int> >::reverse_iterator lefts_iter=lefts_list.rbegin();
     list<pair<int,int> >::reverse_iterator k,m;
     int cr;
     int cl;
-    while(noCollision(*abit,*bait) && abit!=ablist.rend() && bait!=balist.rend())
+    while(noCollision(*rights_iter,*lefts_iter) && rights_iter!=rights_list.rend() && lefts_iter!=lefts_list.rend())
     {
         ans++;
         /*
          * increase the one 
          * which is on the left
          */
-        if(abit->second <= bait->second)
+        if(rights_iter->second <= lefts_iter->second)
         {
-            abit++;
+            rights_iter++;
         }
         else
         {
-            bait++;
+            lefts_iter++;
         }
     }
     cl=0;
     cr=0;
-    k=abit;
+    k=rights_iter;
     k++;
-    m=bait;
+    m=lefts_iter;
     m++;
     /*
      * Dragon hunter
      */
-    if(bait->second>=abit->first)
+    if(lefts_iter->second>=rights_iter->first)
     {
-        while(k->second < abit->second)
+        while(k->second < rights_iter->second)
         {
             k++;
             cr++;
         }
-        while(bait->first > m->first)
+        while(lefts_iter->first > m->first)
         {
             m++;
             cl++;
@@ -166,13 +166,13 @@ int getMaxAB(list<pair<int,int> >& ablist,list<pair<int,int> >& balist)
         ans++;
         if (cr > cl )
         {
-            abit++;
-            bait=k;
+            rights_iter++;
+            lefts_iter=k;
         }
         else
         {
-            bait++;
-            abit=m;
+            lefts_iter++;
+            rights_iter=m;
         }
     }
 
@@ -183,11 +183,11 @@ int getMaxAB(list<pair<int,int> >& ablist,list<pair<int,int> >& balist)
     return ans;
 }
 
-int mergeEm(list<pair<int,int> >& ablist,list<pair<int,int> >& balist)
+int mergeEm(list<pair<int,int> >& rights_list,list<pair<int,int> >& lefts_list)
 {
     int ans;
-    ans=max(ablist.size(),balist.size());
-    ans=max(ans,getMaxAB(ablist,balist));
+    ans=max(rights_list.size(),lefts_list.size());
+    ans=max(ans,getMaxAB(rights_list,lefts_list));
     return ans;
 }
 
@@ -195,25 +195,25 @@ void printEm(pair<int,int> & p)
 {
     cout << p.first << "\t" << p.second << endl;
 }
-int solveMe(int **ab,int abcnt,int ** ba,int bacnt)
+int solveMe(int **rights,int rightscnt,int ** lefts,int leftscnt)
 {
     /*
      * Main solving function
      */
-    list< pair <int , int> > ablist; 
-    list< pair <int , int> > balist; 
-    for(int i=0;i<abcnt;i++)
-        ablist.push_back(pair<int,int>(ab[i][0],ab[i][1]));
-    for(int i=0;i<bacnt;i++)
-        balist.push_back(pair<int,int>(ba[i][0],ba[i][1]));
-    clean_overlapping(ablist);
-    clean_overlapping(balist);
-    //copy(ab,ab+abcnt,ablist);
+    list< pair <int , int> > rights_list; 
+    list< pair <int , int> > lefts_list; 
+    for(int i=0;i<rightscnt;i++)
+        rights_list.push_back(pair<int,int>(rights[i][0],rights[i][1]));
+    for(int i=0;i<leftscnt;i++)
+        lefts_list.push_back(pair<int,int>(lefts[i][0],lefts[i][1]));
+    clean_overlapping(rights_list);
+    clean_overlapping(lefts_list);
+    //copy(rights,rights+rightscnt,rights_list);
 
-    for_each(ablist.begin(),ablist.end(),printEm);
+    for_each(rights_list.begin(),rights_list.end(),printEm);
     cout << endl;
-    for_each(balist.begin(),balist.end(),printEm);
-    return mergeEm(ablist,balist);
+    for_each(lefts_list.begin(),lefts_list.end(),printEm);
+    return mergeEm(rights_list,lefts_list);
 }
 
 int main()
