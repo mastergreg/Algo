@@ -6,7 +6,7 @@
 
  * Creation Date : 19-12-2011
 
- * Last Modified : Thu 05 Jan 2012 10:50:14 PM EET
+ * Last Modified : Fri 06 Jan 2012 02:40:30 AM EET
 
  * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -68,37 +68,60 @@ void clean_overlapping(list< pair < int , int > >& alist)
 }
 
 inline
-bool collides(pair<int,int>& abelem,pair<int,int>& baelem)
+bool collidesA(pair<int,int>& abelem,pair<int,int>& baelem)
 {
     /*
-     * [ -> ]       ||       [ -> ]
-     *    [ <- ]    ||    [ <- ]
+     * [ -> ]       = abelem
+     *    [ <- ]    = baelem
      */
-    return (abelem.second > baelem.second && abelem.second < baelem.first) \
-        || (abelem.first < baelem.first && abelem.second > baelem.first);
+    return (abelem.second > baelem.second && abelem.second < baelem.first);
+
 }
+
+inline
+bool collidesB(pair<int,int>& abelem,pair<int,int>& baelem)
+{
+    /*
+     *    [ -> ]    = abelem
+     * [ <- ]       = baelem
+     */
+    return (abelem.first < baelem.first && abelem.second > baelem.first);
+}
+
+inline
+bool collidesC(pair<int,int>& abelem,pair<int,int>& baelem)
+{
+    /*
+     *    [ -> ]    = abelem
+     * [    <-   ]  = baelem
+     */
+    return (abelem.first < baelem.second && abelem.second < baelem.first);
+}
+
+inline
+bool collidesD(pair<int,int>& abelem,pair<int,int>& baelem)
+{
+    /*
+     * [    ->    ] = abelem
+     *    [ <- ]    = baelem
+     */
+    return (abelem.first > baelem.second && abelem.second > baelem.first);
+}
+
 
 int getMaxAB(list<pair<int,int> >& ablist,list<pair<int,int> >& balist)
 {
     int ans=0;
+    list<pair<int,int> >::reverse_iterator abit;
     list<pair<int,int> >::reverse_iterator bait;
-    list<pair<int,int> >::iterator abit;
     int ba;
     int ab;
-    for(ba=balist.size(),ab=0,bait=balist.rbegin(),abit=ablist.begin();
+    for(ba=balist.size(),bait=balist.rbegin(),abit=ablist.rbegin();
             bait!=balist.rend();bait++,ba--)
     {
-        for(;abit!=ablist.end();abit++,ab++)
+        for(ab=0;abit!=ablist.rend();abit++,ab++)
         {
-            if(collides(*abit,*bait))
-            {
-                //cout << "bang"<< endl;
-                //cout << abit->first << "\t->\t" << abit->second << endl;
-                //cout << bait->second << "\t-<\t" << bait->first <<endl;
-                ans = max(ans,ab+ba);
-                break;
-            }
-
+                ans =max(ans, ba+ab);
         }
     }
     return ans;
@@ -131,9 +154,9 @@ int solveMe(int **ab,int abcnt,int ** ba,int bacnt)
     clean_overlapping(balist);
     //copy(ab,ab+abcnt,ablist);
 
-    //for_each(ablist.begin(),ablist.end(),printEm);
-    //cout << endl;
-    //for_each(balist.begin(),balist.end(),printEm);
+    for_each(ablist.begin(),ablist.end(),printEm);
+    cout << endl;
+    for_each(balist.begin(),balist.end(),printEm);
     return mergeEm(ablist,balist);
 }
 
@@ -180,8 +203,8 @@ int main()
         toplimit=max(buf1,toplimit);
     }
 
-    sort(AB,AB+(++ABcnt),compare2);
-    sort(BA,BA+(++BAcnt),compare);
+    sort(AB,AB+(++ABcnt),compare);
+    sort(BA,BA+(++BAcnt),compare2);
     printf("solved: %d\n",solveMe(AB,ABcnt,BA,BAcnt));
 
 
