@@ -6,7 +6,7 @@
 
  * Creation Date : 19-12-2011
 
- * Last Modified : Fri 06 Jan 2012 02:40:30 AM EET
+ * Last Modified : Fri 06 Jan 2012 02:51:33 AM EET
 
  * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -108,6 +108,15 @@ bool collidesD(pair<int,int>& abelem,pair<int,int>& baelem)
     return (abelem.first > baelem.second && abelem.second > baelem.first);
 }
 
+inline
+bool noCollision(pair<int,int>& abelem,pair<int,int>& baelem)
+{
+    /*                                    
+     * [ -> ]         ||        [ -> ]      = abelem
+     *        [ <- ]  || [ <- ]             = baelem
+     */
+    return (abelem.second <= baelem.second || abelem.first > baelem.first);
+}
 
 int getMaxAB(list<pair<int,int> >& ablist,list<pair<int,int> >& balist)
 {
