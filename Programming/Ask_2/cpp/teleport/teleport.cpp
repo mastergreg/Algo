@@ -6,7 +6,7 @@
 
  * Creation Date : 19-12-2011
 
- * Last Modified : Fri 06 Jan 2012 04:29:27 AM EET
+ * Last Modified : Fri 06 Jan 2012 04:44:27 AM EET
 
  * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -150,6 +150,24 @@ int getMaxAB(list<pair<int,int> >& rights_list,list<pair<int,int> >& lefts_list)
     m++;
     /*
      * Dragon hunter
+     *
+                                       /   \
+     _                         )      ((   ))     (
+     (@)                      /|\      ))_((     /|\
+     |-|                     / | \    (/\|/\)   / | \                      (@)
+     | | -------------------/--|-voV---\`|'/--Vov-|--\---------------------|-|
+     |-|                         '^`   (o o)  '^`                          | |
+     | |                               `\Y/'                               |-|
+     |-|                                                                   | |
+     | |                       Let the hunt begin!!!!!                     |-|
+     |-|                                                                   | |
+     | |                                                                   |-|
+     |_|___________________________________________________________________| |
+     (@)              l   /\ /         ( (       \ /\   l                `\|-|
+                      l /   V           \ \       V   \ l                  (@)
+                      l/                _) )_          \I
+                                        `\ /'
+                                          `  Jeff Ferris
      */
     if(lefts_iter->second>=rights_iter->first)
     {
