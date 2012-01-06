@@ -6,7 +6,7 @@
 
  * Creation Date : 19-12-2011
 
- * Last Modified : Fri 06 Jan 2012 02:21:57 PM EET
+ * Last Modified : Fri 06 Jan 2012 04:53:11 PM EET
 
  * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -35,6 +35,20 @@ bool compare2(const int *v1,const int *v2)
     return !( (v1[1] < v2[1] ) || (v1[1]==v2[1] && v1[0] < v2[0]));
 }
 
+inline
+bool overlaps(pair<int,int>& current,int prevs,int preve)
+{
+    /*
+     *     [ -> ]    ||     [ <- ]
+     *   [   ->   ]  ||   [   <-   ]
+     *
+     *   Checking among same "type" of pairs
+     *   (either rights or lefts)
+     */
+    return (current.second > current.first && current.second > preve && current.first < prevs) \
+                || (current.second < current.first && current.second < preve && current.first > prevs);
+}
+
 void clean_overlapping(list< pair < int , int > >& alist)
 {
     /*
@@ -50,8 +64,7 @@ void clean_overlapping(list< pair < int , int > >& alist)
     it++;
     for(;it!=alist.end();++it)
     {
-        if((it->second > it->first && it->second > preve && it->first < prevs)
-                || (it->second < it->first && it->second < preve && it->first > prevs))
+        if(overlaps(*it,prevs,preve))
         {
             /*
              * This is not safe
@@ -74,7 +87,8 @@ bool collidesA(pair<int,int>& rights_elem,pair<int,int>& lefts_elem)
      * [ -> ]       = rights_elem
      *    [ <- ]    = lefts_elem
      */
-    return (rights_elem.second > lefts_elem.second && rights_elem.second < lefts_elem.first);
+    return (rights_elem.second > lefts_elem.second && \
+            rights_elem.second < lefts_elem.first);
 
 }
 
@@ -85,7 +99,8 @@ bool collidesB(pair<int,int>& rights_elem,pair<int,int>& lefts_elem)
      *    [ -> ]    = rights_elem
      * [ <- ]       = lefts_elem
      */
-    return (rights_elem.first < lefts_elem.first && rights_elem.second > lefts_elem.first);
+    return (rights_elem.first < lefts_elem.first && \
+            rights_elem.second > lefts_elem.first);
 }
 
 inline
@@ -95,7 +110,8 @@ bool collidesC(pair<int,int>& rights_elem,pair<int,int>& lefts_elem)
      *    [ -> ]    = rights_elem
      * [    <-   ]  = lefts_elem
      */
-    return (rights_elem.first < lefts_elem.second && rights_elem.second < lefts_elem.first);
+    return (rights_elem.first > lefts_elem.second && \
+            rights_elem.second < lefts_elem.first);
 }
 
 inline
@@ -105,7 +121,8 @@ bool collidesD(pair<int,int>& rights_elem,pair<int,int>& lefts_elem)
      * [    ->    ] = rights_elem
      *    [ <- ]    = lefts_elem
      */
-    return (rights_elem.first > lefts_elem.second && rights_elem.second > lefts_elem.first);
+    return (rights_elem.first > lefts_elem.second && \
+            rights_elem.second > lefts_elem.first);
 }
 
 inline
@@ -115,7 +132,8 @@ bool noCollision(pair<int,int>& rights_elem,pair<int,int>& lefts_elem)
      * [ -> ]         ||        [ -> ]      = rights_elem
      *        [ <- ]  || [ <- ]             = lefts_elem
      */
-    return (rights_elem.second <= lefts_elem.second || rights_elem.first >= lefts_elem.first);
+    return (rights_elem.second <= lefts_elem.second || \
+            rights_elem.first >= lefts_elem.first);
 }
 
 int getMaxAB(list<pair<int,int> >& rights_list,list<pair<int,int> >& lefts_list)
@@ -126,9 +144,14 @@ int getMaxAB(list<pair<int,int> >& rights_list,list<pair<int,int> >& lefts_list)
     list<pair<int,int> >::reverse_iterator k,m;
     int cr;
     int cl;
-    do
+    while(rights_iter++ != rights_list.rend() && lefts_iter++ != lefts_list.rend())
     {
-        while(noCollision(*rights_iter,*lefts_iter) && rights_iter!=rights_list.rend() && lefts_iter!=lefts_list.rend())
+        /*
+         * first sanity check then collisions
+         * '&&' will shortcircuit if any iterator is out of bounds
+         */
+        while(rights_iter!=rights_list.rend() && lefts_iter!=lefts_list.rend() && \
+                noCollision(*rights_iter,*lefts_iter))
         {
             ans++;
             /*
@@ -146,8 +169,14 @@ int getMaxAB(list<pair<int,int> >& rights_list,list<pair<int,int> >& lefts_list)
                 cout << "increase left" << endl;
             }
         }
-        cl=0;
+        cl=0; 
+        /*
+         * How many times lefts_iter collides
+         */
         cr=0;
+        /*
+         * How many times rights_iter collides
+         */
         k=lefts_iter;
         k++;
         m=rights_iter;
@@ -173,13 +202,15 @@ int getMaxAB(list<pair<int,int> >& rights_list,list<pair<int,int> >& lefts_list)
             /*
              * Pick the one with the least collisions
              */
-            if(cr>cl)
+            if(cl>cr)
             {
                 rights_iter++;
+                lefts_iter=k;
             }
             else
             {
                 lefts_iter++;
+                rights_iter=m;
             }
         }
 
@@ -203,17 +234,49 @@ int getMaxAB(list<pair<int,int> >& rights_list,list<pair<int,int> >& lefts_list)
                 cl++;
             }
             ans++;
-            if(cr>cl)
+            if(cl>cr)
             {
                 rights_iter++;
+                lefts_iter=k;
             }
             else
             {
                 lefts_iter++;
+                rights_iter=m;
+            }
+        }
+        /*
+         * Check for type C collisions
+         */
+        else if(collidesC(*rights_iter,*lefts_iter))
+        {
+            while(k != lefts_list.rend() && collidesC(*rights_iter,*k))
+            {
+                k++;
+                cr++;
+            }
+            while(m != rights_list.rend() && collidesC(*m,*lefts_iter))
+            {
+                m++;
+                cl++;
+            }
+            ans++;
+            /*
+             * Pick the one with the least collisions
+             */
+            if(cl>cr)
+            {
+                rights_iter++;
+                lefts_iter=k;
+            }
+            }
+            else
+            {
+                lefts_iter++;
+                rights_iter=m;
             }
         }
     }
-    while(rights_iter++ != rights_list.rend() && lefts_iter++ != lefts_list.rend());
 
     return ans;
 }
