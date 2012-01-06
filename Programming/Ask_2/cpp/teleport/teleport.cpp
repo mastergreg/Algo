@@ -6,7 +6,7 @@
 
  * Creation Date : 19-12-2011
 
- * Last Modified : Sat 07 Jan 2012 12:13:49 AM EET
+ * Last Modified : Sat 07 Jan 2012 12:42:39 AM EET
 
  * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -97,13 +97,13 @@ void printEm(pair<int,int> & p)
 {
     cout << p.first << "\t" << p.second << endl;
 }
-void mergeTheListsIntoMakis(list< pair<int , int> >& rights_list,
-                            list< pair<int , int> >& lefts_list,
+
+void mergeTheListsIntoMakis(list< pair<int , int> >& rights_list,\
+                            list< pair<int , int> >& lefts_list,\
                             vector<int>& maki)
 {
     list< pair<int,int> >::iterator rit=rights_list.begin();
     list< pair<int,int> >::iterator lit=lefts_list.begin();
-
     int current_right_end;
     int current_left_end;
     while(rit!=rights_list.end() && lit!=lefts_list.end())
@@ -113,18 +113,14 @@ void mergeTheListsIntoMakis(list< pair<int , int> >& rights_list,
         if(current_right_end>current_left_end)
         {
             if(maki.back()!=current_right_end)
-            {
                 maki.push_back(current_right_end);
-            }
             rit++;
 
         }
         else
         {
             if(maki.back()!=current_left_end)
-            {
                 maki.push_back(current_left_end);
-            }
             lit++;
         }
     }
@@ -134,17 +130,13 @@ void mergeTheListsIntoMakis(list< pair<int , int> >& rights_list,
     while(rit!=rights_list.end())
     {
         if(maki.back()!=current_right_end)
-        {
             maki.push_back(current_right_end);
-        }
         rit++;
     }
     while(lit!=lefts_list.end())
     {
         if(maki.back()!=current_left_end)
-        {
             maki.push_back(current_left_end);
-        }
         lit++;
     }
 }
@@ -174,9 +166,30 @@ int solveMe(int **rights,int rightscnt,int ** lefts,int leftscnt)
 
     mergeTheListsIntoMakis(rights_list,lefts_list,maki);
 
+    cout << "this is MAKIS!!!" << endl;
+    copy(maki.begin(),maki.end(),ostream_iterator<int>(cout,"\n"));
+
     
 
     return mergeEm(rights_list,lefts_list);
+}
+
+int solveMe2(int **pairs,int scientists)
+{
+    int *maki = new int[scientists];
+    int *makend;
+    
+    for(int i=0;i<scientists;i++)
+        maki[i]=pairs[i][1];
+
+    sort(maki,maki+scientists);
+    makend = unique(maki,maki+scientists);
+
+    cout << "makis" << endl;
+    copy(maki,makend,ostream_iterator<int>(cout,"\n"));
+    cout << "makis" << endl;
+    return 0;
+
 }
 
 int main()
@@ -202,29 +215,33 @@ int main()
      */
     for(int i=0;i<scientists;i++)
     {
-        nothing = scanf("%d %d",&buf0,&buf1);
-        if(buf0<buf1)
-        {
+        //nothing = scanf("%d %d",&buf0,&buf1);
+        //if(buf0<buf1)
+        //{
 
-            AB[++ABcnt]=new int[2];
-            AB[ABcnt][0]=buf0;
-            AB[ABcnt][1]=buf1;
+        //    AB[++ABcnt]=new int[2];
+        //    AB[ABcnt][0]=buf0;
+        //    AB[ABcnt][1]=buf1;
 
-        }
-        else
-        {
-            BA[++BAcnt]=new int[2];
-            BA[BAcnt][0]=buf0;
-            BA[BAcnt][1]=buf1;
+        //}
+        //else
+        //{
+        //    BA[++BAcnt]=new int[2];
+        //    BA[BAcnt][0]=buf0;
+        //    BA[BAcnt][1]=buf1;
 
-        }
-        toplimit=max(buf0,toplimit);
-        toplimit=max(buf1,toplimit);
+        //}
+        //toplimit=max(buf0,toplimit);
+        //toplimit=max(buf1,toplimit);
+        AB[i]=new int[2];
+        nothing = scanf("%d %d",AB[i],AB[i]+1);
+        
     }
 
-    sort(AB,AB+(++ABcnt),compare);
-    sort(BA,BA+(++BAcnt),compare2);
-    printf("solved: %d\n",solveMe(AB,ABcnt,BA,BAcnt));
+    //sort(AB,AB+(++ABcnt),compare);
+    //sort(BA,BA+(++BAcnt),compare2);
+    //printf("solved: %d\n",solveMe(AB,ABcnt,BA,BAcnt));
+    printf("%d\n",solveMe2(AB,scientists));
 
 
     return 0;
