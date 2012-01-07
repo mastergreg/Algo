@@ -6,7 +6,7 @@
 
  * Creation Date : 19-12-2011
 
- * Last Modified : Sat 07 Jan 2012 03:27:10 AM EET
+ * Last Modified : Sat 07 Jan 2012 03:31:59 AM EET
 
  * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -77,8 +77,9 @@ int binary_insert(int key,int *array,int array_size)
 int llis(int *array,int array_size)
 {
     int *stacks=new int[array_size];
-    int stacks_size=0;
-    for(int i=0;i<array_size;i++)
+    int stacks_size=1;
+    stacks[0]=array[0];
+    for(int i=1;i<array_size;i++)
     {
         stacks_size = binary_insert(array[i],stacks,stacks_size);
     }
