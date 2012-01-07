@@ -6,7 +6,7 @@
 
  * Creation Date : 19-12-2011
 
- * Last Modified : Sat 07 Jan 2012 03:37:52 AM EET
+ * Last Modified : Sat 07 Jan 2012 03:49:50 AM EET
 
  * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -46,32 +46,18 @@ int binary_insert(int key,int *array,int array_size)
     while(high-low>1)
     {
         if(key<array[pivot])
-        {
             high=pivot;
-        }
         else
-        {
             low=pivot;
-        }
         pivot=(high+low)/2;
     }
     if(array[low]>key)
-    {
         array[low]=key;
-    }
     else if (array[high]>key)
-    {
         array[high]=key;
-    }
     else
-    {
-        array[array_size]=key;
-        return array_size+1;
-    }
+        array[array_size++]=key;
     return array_size;
-
-    
-
 }
 
 int llis(int *array,int array_size)
@@ -80,9 +66,8 @@ int llis(int *array,int array_size)
     int stacks_size=1;
     stacks[0]=array[0];
     for(int i=1;i<array_size;i++)
-    {
         stacks_size = binary_insert(array[i],stacks,stacks_size);
-    }
+    
     delete[] stacks;
     return stacks_size;
 }
@@ -94,7 +79,6 @@ int solveMe(int **pairs,int scientists)
     int *maki = new int[scientists];
     int *makend;
     int makisize;
-    int ans;
     
     for(int i=0;i<scientists;i++)
         maki[i]=pairs[i][1];
@@ -112,11 +96,7 @@ int solveMe(int **pairs,int scientists)
     }
     delete[] maki;
 
-    ans = llis(x,scientists);
-
-    delete[] x;
-    return ans;
-
+    return llis(x,scientists);
 }
 
 int main()
