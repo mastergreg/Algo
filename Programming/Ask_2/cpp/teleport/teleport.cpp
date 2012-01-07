@@ -6,7 +6,7 @@
 
  * Creation Date : 19-12-2011
 
- * Last Modified : Sat 07 Jan 2012 03:49:50 AM EET
+ * Last Modified : Sat 07 Jan 2012 04:56:02 AM EET
 
  * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -14,14 +14,7 @@
 
 #include <cstdio>
 #include <cstdlib>
-#include <vector>
-#include <list>
 #include <algorithm>
-#include <utility>
-#include <set>
-#include <iostream>
-#include <ostream>
-#include <iterator>
 
 using namespace std;
 
