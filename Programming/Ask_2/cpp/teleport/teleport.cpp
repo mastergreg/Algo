@@ -6,7 +6,7 @@
 
  * Creation Date : 19-12-2011
 
- * Last Modified : Sat 07 Jan 2012 03:11:59 AM EET
+ * Last Modified : Sat 07 Jan 2012 03:27:10 AM EET
 
  * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -36,29 +36,41 @@ int compare(const void *a,const void *b)
 }
 
 
-int binary_search(int key,int *array,int array_size)
+int binary_insert(int key,int *array,int array_size)
 {
-}
-int binary_insert(int key,int *stacks,int stacks_size)
-{
-/*
- * This will return the new stacks_size
- * and edit the appropriate stack to have the key
- */
+    int low,high,pivot;
+    low=0;
+    high=array_size-1;
+    pivot=(high+low)/2;
 
-    for(int i=0;i<stacks_size;i++)
+    while(high-low>1)
     {
-        /*
-         * Should be implemented with binary search
-         */
-        if(key<stacks[i])
+        if(key<array[pivot])
         {
-            stacks[i]=key;
-            return stacks_size;
+            high=pivot;
         }
+        else
+        {
+            low=pivot;
+        }
+        pivot=(high+low)/2;
     }
-    stacks[stacks_size]=key;
-    return stacks_size+1;
+    if(array[low]>key)
+    {
+        array[low]=key;
+    }
+    else if (array[high]>key)
+    {
+        array[high]=key;
+    }
+    else
+    {
+        array[array_size]=key;
+        return array_size+1;
+    }
+    return array_size;
+
+    
 
 }
 
