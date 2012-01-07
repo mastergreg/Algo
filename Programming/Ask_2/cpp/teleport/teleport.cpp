@@ -6,7 +6,7 @@
 
  * Creation Date : 19-12-2011
 
- * Last Modified : Sat 07 Jan 2012 03:31:59 AM EET
+ * Last Modified : Sat 07 Jan 2012 03:37:52 AM EET
 
  * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -83,7 +83,7 @@ int llis(int *array,int array_size)
     {
         stacks_size = binary_insert(array[i],stacks,stacks_size);
     }
-
+    delete[] stacks;
     return stacks_size;
 }
 
@@ -94,6 +94,7 @@ int solveMe(int **pairs,int scientists)
     int *maki = new int[scientists];
     int *makend;
     int makisize;
+    int ans;
     
     for(int i=0;i<scientists;i++)
         maki[i]=pairs[i][1];
@@ -109,7 +110,12 @@ int solveMe(int **pairs,int scientists)
         x[i] = (int*) bsearch(pairs[i]+1, maki, makisize, sizeof(int), compare) \
                - maki;
     }
-    return llis(x,scientists);
+    delete[] maki;
+
+    ans = llis(x,scientists);
+
+    delete[] x;
+    return ans;
 
 }
 
@@ -120,16 +126,10 @@ int main()
      */
     int scientists=0;
     int nothing;
-    int toplimit=0;
     int **AB;
-    int ABcnt=-1;
-    int **BA;
-    int BAcnt=-1;
-    int buf0,buf1;
 
     nothing = scanf("%d",&scientists);
     AB=new int*[scientists];
-    BA=new int*[scientists];
 
     /*
      * Get input
@@ -140,7 +140,6 @@ int main()
         nothing = scanf("%d %d",AB[i],AB[i]+1);
     }
     printf("%d\n",solveMe(AB,scientists));
-
 
     return 0;
 }
