@@ -1,4 +1,5 @@
-Algorithms and Complexity hw @ NTUA
+#Algorithms and Complexity @ NTUA
+
 [Course URL](http://corelab.ntua.gr/courses/algorithms/)
 
 ## LICENSE
