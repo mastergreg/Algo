@@ -6,7 +6,7 @@
 
 * Creation Date : 19-12-2011
 
-* Last Modified : Wed 04 Jan 2012 09:24:33 PM EET
+* Last Modified : Sun 08 Jan 2012 06:42:01 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -33,32 +33,50 @@ int manhatan(const int *v1,const int *v2)
      * =========================== */
     return abs( v1[0] - v2[0] ) + abs( v1[1] - v2[1] );
 }
+inline
+int manhatan(const int *v1,const int j,const int k)
+{
+    /* =========================== 
+     * Calculate manthatan 
+     * distance of two points
+     * =========================== */
+    return abs( v1[0] - j ) + abs( v1[1] - k );
+}
 
-int solveMe(int n,int **shops)
+int solveMe(int R,int C,int n,int **shops)
 {
     int next;
     int distances_i_next;
     int distances_j_next;
     int result;
-    int *current_line = new int[n];
-    int *prev_line = new int[n];
-    prev_line[n-1] = 0;
+    int **current_layer = new int*[R+1];
+    int **prev_layer = new int*[R+1];
+    for(int i=0;i<=R;i++)
+    {
+        current_layer[i]=new int[C+1];
+        prev_layer[i]=new int[C+1];
+        fill(prev_layer[i],prev_layer[i]+C+1,0);
+    }
 
     for(int i = n-2 , next = n-1 ; i >= 0 ; i-- , next--)
     {
         distances_i_next = manhatan( shops[next] , shops[i] );
-        for(int j = i-1 ; j >= 0 ; j--)
+        for(int j = R ; j > 0 ; j--)
         {
-            distances_j_next = manhatan( shops[next] , shops[j] );
-            current_line[j] = min( distances_i_next + prev_line[j],
-                                    distances_j_next + prev_line[i] );
+            for(int k = C ; k > 0 ; k--)
+            {
+                distances_j_next = manhatan( shops[next] , j ,k );
+                current_layer[j][k] = min( distances_i_next + prev_layer[j][k],
+                        distances_j_next + prev_layer[shops[i][0]][shops[i][1]] );
+            }
         }
-        swap( current_line , prev_line );
+        swap( current_layer, prev_layer );
     }
 
-    result = current_line[0];
-    delete[] current_line;
-    delete[] prev_line;
+    result = current_layer[shops[0][0]][shops[0][1]];
+
+    delete[] current_layer;
+    delete[] prev_layer;
     return result;
 }
 
@@ -79,7 +97,7 @@ int main(void)
         shops[i] = new int[2];
         nothing = scanf("%d %d" , &shops[i][0] , &shops[i][1]);
     }
-    printf( "%d\n" , solveMe( n , shops ) );
+    printf( "%d\n" , solveMe(r,c, n , shops ) );
     return 0;
 }
 
