@@ -6,7 +6,7 @@
 
 * Creation Date : 19-12-2011
 
-* Last Modified : Sun 08 Jan 2012 06:42:01 PM EET
+* Last Modified : Sun 08 Jan 2012 07:00:01 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -43,6 +43,7 @@ int manhatan(const int *v1,const int j,const int k)
     return abs( v1[0] - j ) + abs( v1[1] - k );
 }
 
+inline
 int solveMe(int R,int C,int n,int **shops)
 {
     int next;
@@ -57,6 +58,11 @@ int solveMe(int R,int C,int n,int **shops)
         prev_layer[i]=new int[C+1];
         fill(prev_layer[i],prev_layer[i]+C+1,0);
     }
+    vector< vector<bool> > shopfield(R+1,vector<bool>(C+1,false));
+    for(int i = 0 ; i < n ; i++)
+    {
+        shopfield[shops[i][0]][shops[i][1]]=true;
+    }
 
     for(int i = n-2 , next = n-1 ; i >= 0 ; i-- , next--)
     {
@@ -65,9 +71,12 @@ int solveMe(int R,int C,int n,int **shops)
         {
             for(int k = C ; k > 0 ; k--)
             {
-                distances_j_next = manhatan( shops[next] , j ,k );
-                current_layer[j][k] = min( distances_i_next + prev_layer[j][k],
-                        distances_j_next + prev_layer[shops[i][0]][shops[i][1]] );
+                if(shopfield[j][k])
+                {
+                    distances_j_next = manhatan( shops[next] , j ,k );
+                    current_layer[j][k] = min( distances_i_next + prev_layer[j][k],
+                            distances_j_next + prev_layer[shops[i][0]][shops[i][1]] );
+                }
             }
         }
         swap( current_layer, prev_layer );
