@@ -6,7 +6,7 @@
 
 * Creation Date : 19-12-2011
 
-* Last Modified : Sun 08 Jan 2012 07:00:01 PM EET
+* Last Modified : Mon 09 Jan 2012 01:30:05 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -22,7 +22,6 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 #include <iterator>
 #include <iostream>
 using namespace std;
-
 
 inline
 int manhatan(const int *v1,const int *v2)
@@ -58,12 +57,6 @@ int solveMe(int R,int C,int n,int **shops)
         prev_layer[i]=new int[C+1];
         fill(prev_layer[i],prev_layer[i]+C+1,0);
     }
-    vector< vector<bool> > shopfield(R+1,vector<bool>(C+1,false));
-    for(int i = 0 ; i < n ; i++)
-    {
-        shopfield[shops[i][0]][shops[i][1]]=true;
-    }
-
     for(int i = n-2 , next = n-1 ; i >= 0 ; i-- , next--)
     {
         distances_i_next = manhatan( shops[next] , shops[i] );
@@ -71,12 +64,9 @@ int solveMe(int R,int C,int n,int **shops)
         {
             for(int k = C ; k > 0 ; k--)
             {
-                if(shopfield[j][k])
-                {
-                    distances_j_next = manhatan( shops[next] , j ,k );
-                    current_layer[j][k] = min( distances_i_next + prev_layer[j][k],
-                            distances_j_next + prev_layer[shops[i][0]][shops[i][1]] );
-                }
+                distances_j_next = manhatan( shops[next] , j ,k );
+                current_layer[j][k] = min( distances_i_next + prev_layer[j][k],
+                        distances_j_next + prev_layer[shops[i][0]][shops[i][1]] );
             }
         }
         swap( current_layer, prev_layer );
