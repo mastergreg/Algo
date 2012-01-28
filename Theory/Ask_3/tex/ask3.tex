@@ -1,19 +1,13 @@
-\documentclass[a4paper,10pt]{article} \usepackage{anysize}
+\documentclass[a4paper,10pt]{article} 
+\usepackage{anysize}
 \marginsize{2cm}{2cm}{1cm}{1cm}
 %\textwidth 6.0in \textheight = 664pt
 \usepackage{xltxtra}
 \usepackage{graphicx}
 \usepackage{color}
 \usepackage{xgreek}
-\usepackage{fancyvrb}
-\usepackage{minted}
-\usepackage{listings}
-\usepackage{enumitem}
 \usepackage{framed}
-\usepackage{relsize}
 \usepackage{float}
-\usepackage{amsmath}
-\usepackage{mathtools}
 \setmainfont[Mapping=TeX-text]{CMU Serif}
 
 %\setmainfont{Arial}
@@ -28,6 +22,18 @@
 \include{title/title}
 %{{{ Προβολή ταινιών
 \section{Προβολή ταινιών} \setcounter{section}{1}
+
+Κρατάμε για κάθε ταινία $M_i$ έναν ακέραιο $Delta_i$ τον οποίο αρχικοποιούμε
+στο 0 καθώς και μια σημαία που δηλώνει αν αυτή η ταινία έχει επιλεγεί από
+κάποιο συνδρομητή. Καθώς περνάμε τις προτιμήσεις του χρήστη $a$ σημειώνουμε
+για την ταινία της επιλογής του τη σημαία της σε "ΕΠΙΛΕΓΜΕΝΗ" και αυξάνουμε
+τον μετρητή της αν αυτή είναι σημειωμένη για προβολή Σαββάτου από τον χρήστη
+ενώ μειώνουμε αν αυτή έχει επιλεγεί για Κυριακή. Αφού ολοκληρώσουμε για όλους
+τους χρήστες. διαβάζουμε τον συντελεστή κάθε των ταινίας και αν αυτός είναι
+θετικός την τοποθετούμε στο σύνολο του Σαββάτου αν είναι αρνητικός στο σύνολο
+της Κυριακής. Αν είναι 0 και έχει σημαία "ΕΠΙΛΕΓΜΕΝΗ" δεν έχει σημασία πού θα
+επιλέξουμε να την βάλουμε.  Αν η σημαία δεν είναι "ΕΠΙΛΕΓΜΕΝΗ" τότε αγνοούμε
+αυτή την ταινία.
 %}}}
 
 %{{{ Μέτρηση συντομότερων μονοπατιών
@@ -38,7 +44,7 @@
 
 %{{{ Ελάχιστο Συνδετικό Δέντρο Υπό Περιορισμούς
 
-Η χρονική πολυπλοκότητα του αλγορίθμου είναι: $\Theta{N}$
+Η χρονική πολυπλοκότητα του αλγορίθμου είναι $\Theta(n)$
 
 %}}}
 
