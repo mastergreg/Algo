@@ -6,7 +6,7 @@
 
 * Creation Date : 29-01-2012
 
-* Last Modified : Sun 29 Jan 2012 11:59:38 PM EET
+* Last Modified : Thu 02 Feb 2012 12:37:55 AM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -15,69 +15,94 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 
 #include <cstdio>
 #include <cstdlib>
+#include <cmath>
+#include <iostream>
+#include <iterator>
 #include <algorithm>
 
 using namespace std;
 
 
-bool cmp(const int *a,const int *b)
-{
-    return a[1]<b[1];
+const int modlimit = 100000007;
 
+void multiply(int **mat0,int **mat2,int **mat3,int size)
+{
+    long long int buf;
+    for ( int i=0 ; i < size ; i++ )
+    {
+        for ( int j = 0 ; j < size ; j++ )
+        {
+            buf = 0;
+            for( int k = 0 ; k < size ; k ++)
+            {
+                buf += mat0[i][k]*mat2[k][j];
+                if ( buf > modlimit )
+                    buf %= modlimit;
+            }
+            mat3[i][j] = buf;
+        }
+    }
 }
 
-bool cnt(const int *a,int b)
-{
-    return a[1]==b;
-}
+
 
 int main()
 {
-    int k,N,M,s,t;
-    int **G;
-    int **OCC;
-    //G is sorted so that there are groups
-    //that end to the same node
-    //OCC should have the starting addreses of each group
-    int a,b;
+    int k,N,M,s,t,a,b;
+    int **mat;
+    int **mat2;
+    int **mat3;
+    int log2k;
 
     scanf("%d %d %d %d %d",&k,&N,&M,&s,&t);
-    G = new int*[M];
-    OCC = new int*[N];
 
+    log2k= (int) log2(k);
+    mat = new int*[N];
+    mat2 = new int*[N];
+    mat3 = new int*[N];
+    //adjacency matrix [from][to]
+    for( int i = 0 ; i < N ; i ++)
+    {
+        mat[i] = new int[N];
+        mat2[i] = new int[N];
+        mat3[i] = new int[N];
+        fill(mat[i],mat[i]+N,0);
+        fill(mat2[i],mat2[i]+N,0);
+        fill(mat3[i],mat3[i]+N,0);
+    }
     for ( int i = 0 ; i < M ; i++ )
     {
-        G[i] = new int[2];
         scanf("%d %d",&a,&b);
-        G[i][0] = a-1;
-        G[i][1] = b-1;
+        a--;
+        b--;
+        mat[a][b] = 1;
+        mat2[a][b] = 1;
     }
+    //printf("in complete\n");
+    //for( int i = 0 ; i < N ; i ++)
+    //{
+    //    copy(mat[i],mat[i]+N,ostream_iterator<int>(cout," "));
+    //    cout << endl;
+    //}
+    //cout << "multiply\n";
+    //multiply(mat,mat,mat3,N);
+    //for( int i = 0 ; i < N ; i ++)
+    //{
+    //    copy(mat3[i],mat3[i]+N,ostream_iterator<int>(cout," "));
+    //    cout << endl;
+    //}
 
-    sort(G,G+M,cmp);
-
-    for (int j = 0 , i = 0 ; j < M && i < N ; j++)
+    for( int i = 0 ; i < log2k ; i++)
     {
-        a = G[j][1];
-        if( i == a )
-        {
-            OCC[i++]=G[j];
-        }
-        else if ( i < a )
-        {
-            for( ; i<a ; i++)
-            {
-                OCC[i] = NULL;
-            }
-            OCC[i++]=G[j];
-        }
-        else
-        {
-            continue;
-        }
+        multiply(mat2,mat2,mat3,N);
+        swap(mat2,mat3);
     }
-
-
-
+    for ( int i = ( int ) pow(2,log2k); i < k-1 ; i++)
+    {
+        multiply(mat,mat2,mat3,N);
+        swap(mat2,mat3);
+    }
+    printf("%d\n",mat2[s-1][t-1]);
 
 
     return 0;

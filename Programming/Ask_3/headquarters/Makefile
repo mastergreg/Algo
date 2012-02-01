@@ -1,5 +1,5 @@
 TARGET=headquarters
-CCFLAGS=-Wall -Wextra -Wuninitialized -g
+CCFLAGS=-Wall -Wextra -Wuninitialized -O3
 all:	$(TARGET)
 $(TARGET):	$(TARGET).cpp
 	g++ $(TARGET).cpp -o $(TARGET) ${CCFLAGS}
