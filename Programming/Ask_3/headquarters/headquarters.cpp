@@ -6,7 +6,7 @@
 
 * Creation Date : 29-01-2012
 
-* Last Modified : Thu 02 Feb 2012 12:37:55 AM EET
+* Last Modified : Thu 02 Feb 2012 12:55:55 AM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -23,9 +23,9 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 using namespace std;
 
 
-const int modlimit = 100000007;
+const long long int modlimit = 100000007;
 
-void multiply(int **mat0,int **mat2,int **mat3,int size)
+void multiply(long long int **mat0,long long int **mat2,long long int **mat3,int size)
 {
     long long int buf;
     for ( int i=0 ; i < size ; i++ )
@@ -49,23 +49,23 @@ void multiply(int **mat0,int **mat2,int **mat3,int size)
 int main()
 {
     int k,N,M,s,t,a,b;
-    int **mat;
-    int **mat2;
-    int **mat3;
+    long long int **mat;
+    long long int **mat2;
+    long long int **mat3;
     int log2k;
 
     scanf("%d %d %d %d %d",&k,&N,&M,&s,&t);
 
     log2k= (int) log2(k);
-    mat = new int*[N];
-    mat2 = new int*[N];
-    mat3 = new int*[N];
+    mat = new long long int*[N];
+    mat2 = new long long int*[N];
+    mat3 = new long long int*[N];
     //adjacency matrix [from][to]
     for( int i = 0 ; i < N ; i ++)
     {
-        mat[i] = new int[N];
-        mat2[i] = new int[N];
-        mat3[i] = new int[N];
+        mat[i] = new long long int[N];
+        mat2[i] = new long long int[N];
+        mat3[i] = new long long int[N];
         fill(mat[i],mat[i]+N,0);
         fill(mat2[i],mat2[i]+N,0);
         fill(mat3[i],mat3[i]+N,0);
@@ -102,7 +102,7 @@ int main()
         multiply(mat,mat2,mat3,N);
         swap(mat2,mat3);
     }
-    printf("%d\n",mat2[s-1][t-1]);
+    printf("%lld\n",mat2[s-1][t-1]);
 
 
     return 0;
