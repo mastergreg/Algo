@@ -6,7 +6,7 @@
 
 * Creation Date : 29-01-2012
 
-* Last Modified : Thu 02 Feb 2012 01:04:30 AM EET
+* Last Modified : Thu 02 Feb 2012 01:39:27 AM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -17,8 +17,6 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 #include <cstdio>
 #include <cstdlib>
 #include <cmath>
-#include <iostream>
-#include <iterator>
 #include <algorithm>
 
 using namespace std;
@@ -36,10 +34,8 @@ void multiply(long long int **mat0,long long int **mat2,long long int **mat3,int
             for( int k = 0 ; k < size ; k ++)
             {
                 buf += mat0[i][k]*mat2[k][j];
-                if ( buf > MODLIMIT )
-                    buf %= MODLIMIT;
             }
-            mat3[i][j] = buf;
+            mat3[i][j] = buf % MODLIMIT;
         }
     }
 }
