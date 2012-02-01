@@ -6,12 +6,13 @@
 
 * Creation Date : 29-01-2012
 
-* Last Modified : Thu 02 Feb 2012 12:55:55 AM EET
+* Last Modified : Thu 02 Feb 2012 01:04:30 AM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
 _._._._._._._._._._._._._._._._._._._._._.*/
 
+#define MODLIMIT 100000007
 
 #include <cstdio>
 #include <cstdlib>
@@ -23,7 +24,6 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 using namespace std;
 
 
-const long long int modlimit = 100000007;
 
 void multiply(long long int **mat0,long long int **mat2,long long int **mat3,int size)
 {
@@ -36,8 +36,8 @@ void multiply(long long int **mat0,long long int **mat2,long long int **mat3,int
             for( int k = 0 ; k < size ; k ++)
             {
                 buf += mat0[i][k]*mat2[k][j];
-                if ( buf > modlimit )
-                    buf %= modlimit;
+                if ( buf > MODLIMIT )
+                    buf %= MODLIMIT;
             }
             mat3[i][j] = buf;
         }
@@ -78,20 +78,6 @@ int main()
         mat[a][b] = 1;
         mat2[a][b] = 1;
     }
-    //printf("in complete\n");
-    //for( int i = 0 ; i < N ; i ++)
-    //{
-    //    copy(mat[i],mat[i]+N,ostream_iterator<int>(cout," "));
-    //    cout << endl;
-    //}
-    //cout << "multiply\n";
-    //multiply(mat,mat,mat3,N);
-    //for( int i = 0 ; i < N ; i ++)
-    //{
-    //    copy(mat3[i],mat3[i]+N,ostream_iterator<int>(cout," "));
-    //    cout << endl;
-    //}
-
     for( int i = 0 ; i < log2k ; i++)
     {
         multiply(mat2,mat2,mat3,N);
