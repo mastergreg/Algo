@@ -6,7 +6,7 @@
 
 * Creation Date : 29-01-2012
 
-* Last Modified : Thu 02 Feb 2012 10:32:44 PM EET
+* Last Modified : Thu 02 Feb 2012 10:40:29 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -77,16 +77,8 @@ void solvem(unsigned long long int **initial_matrix, int N, int k,int s,int t)
                 multiply(sup1,sup1,sup2,N);
                 swap(sup1,sup2);
             }
-            if ( j == 0 )
-            {
-                for ( int l = 0 ; l < N ; ++l )
-                    copy(sup1[l],sup1[l]+N,ans[l]);
-            }
-            else
-            {
-                multiply(ans,sup1,sup2,N);
-                swap(sup2,ans);
-            }
+            multiply(ans,sup1,sup2,N);
+            swap(sup2,ans);
         }
     }
     printf("%llu\n",ans[s-1][t-1]);
