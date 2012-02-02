@@ -6,7 +6,7 @@
 
 * Creation Date : 29-01-2012
 
-* Last Modified : Thu 02 Feb 2012 11:13:03 AM EET
+* Last Modified : Thu 02 Feb 2012 10:32:44 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -34,8 +34,11 @@ void multiply(unsigned long long int **mat0,unsigned long long int **mat2,unsign
         {
             buf = 0;
             for( int k = 0 ; k < N ; k ++)
+            {
                 buf += mat0[i][k]*mat2[k][j];
-            mat3[i][j] = buf % MODLIMIT;
+                //buf %=MODLIMIT;
+            }
+                mat3[i][j] = buf % MODLIMIT;
         }
     }
 }
@@ -53,6 +56,8 @@ void solvem(unsigned long long int **initial_matrix, int N, int k,int s,int t)
     for ( int i = 0 ; i < N ; i ++ )
     {
         ans[i] = new unsigned long long int[N];
+        fill(ans[i],ans[i]+N,0);
+        ans[i][i]=1;
         sup2[i] = new unsigned long long int[N];
     }
     k--;
@@ -73,9 +78,10 @@ void solvem(unsigned long long int **initial_matrix, int N, int k,int s,int t)
                 swap(sup1,sup2);
             }
             if ( j == 0 )
+            {
                 for ( int l = 0 ; l < N ; ++l )
-                    for ( int m = 0 ; m < N ; ++m )
-                        ans[l][m] = sup1[l][m];
+                    copy(sup1[l],sup1[l]+N,ans[l]);
+            }
             else
             {
                 multiply(ans,sup1,sup2,N);
@@ -94,12 +100,10 @@ int main()
 {
     int k,N,M,s,t,a,b;
     unsigned long long int **mat;
-    int log2k;
     int nothing;
 
     nothing = scanf("%d %d %d %d %d",&k,&N,&M,&s,&t);
 
-    log2k= (int) log2(k);
     mat = new unsigned long long int*[N];
     //adjacency matrix [from][to]
     for( int i = 0 ; i < N ; i ++)
