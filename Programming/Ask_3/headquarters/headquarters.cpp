@@ -6,7 +6,7 @@
 
 * Creation Date : 29-01-2012
 
-* Last Modified : Thu 02 Feb 2012 11:09:12 AM EET
+* Last Modified : Thu 02 Feb 2012 11:13:03 AM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -46,15 +46,13 @@ void solvem(unsigned long long int **initial_matrix, int N, int k,int s,int t)
     //using two more matrices for mul
     //and ans as the accumulator
     unsigned long long int **sup1,**sup2,**ans;
-    sup1 = new unsigned long long int*[N];
+    sup1 = initial_matrix;
     sup2 = new unsigned long long int*[N];
     ans = new unsigned long long int*[N];
     unsigned int bit;
     for ( int i = 0 ; i < N ; i ++ )
     {
-        sup1[i] = new unsigned long long int[N];
         ans[i] = new unsigned long long int[N];
-        copy(initial_matrix[i],initial_matrix[i]+N,sup1[i]);
         sup2[i] = new unsigned long long int[N];
     }
     k--;
