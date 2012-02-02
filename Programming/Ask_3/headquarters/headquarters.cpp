@@ -6,7 +6,7 @@
 
 * Creation Date : 29-01-2012
 
-* Last Modified : Thu 02 Feb 2012 03:11:04 AM EET
+* Last Modified : Thu 02 Feb 2012 10:22:29 AM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -17,6 +17,8 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 #include <cstdio>
 #include <cstdlib>
 #include <cmath>
+#include <iostream>
+#include <iterator>
 #include <algorithm>
 
 using namespace std;
@@ -40,42 +42,66 @@ void multiply(long long int **mat0,long long int **mat2,long long int **mat3,int
     }
 }
 
-void solvem(long long int **initial_matrix,long long int **answer, int N, int k)
+void solvem(long long int **initial_matrix,long long int **answer, int N, int k,int s,int t)
 {
-    long long int **sup1,**sup2;
+    //ans is initialized to 0
+    //using two more matrices for mul
+    //and ans as the accumulator
+    long long int **sup1,**sup2,**ans2;
     sup1 = new long long int*[N];
     sup2 = new long long int*[N];
+    ans2 = new long long int*[N];
     unsigned int bit;
     for ( int i = 0 ; i < N ; i ++ )
     {
         sup1[i] = new long long int[N];
+        ans2[i] = new long long int[N];
+        //for ( int j = 0 ; j < N ; j ++ )
+        //{
+        //    sup[i][j] = initial_matrix[i][j];
+
+        //}
         copy(initial_matrix[i],initial_matrix[i]+N,sup1[i]);
         sup2[i] = new long long int[N];
     }
     k--;
-    printf("k-1 = %d\n",k);
-    for ( int i = 0 ; i < 32 ; i++)
+    //we need to move k-1 times ( right? )
+    //printf("k-1 = %d\n",k);
+    for ( int i = 0 , j = 0 ; i < 32 ; i++)
     {
         bit = ( k & ( 1 << i ) ) >> i;
+        //using binary representation of k
+        //to calculate the powers of 2 that
+        //k consists of
         if( bit )
         {
-            printf("2^%d+\n",i);
-            for( int j = 0 ; j < i ; j++)
+            //printf("calculating A^(2^%d)\n",i);
+            for( ; j < i ; j++ )
             {
+                //A*=A, i times
                 multiply(sup1,sup1,sup2,N);
                 swap(sup1,sup2);
             }
-            for ( int i = 0 ; i < N ; i ++ )
+            //printf("calculated, multipling with answer\n");
+            if ( j == 0 )
             {
-                for ( int j = 0 ; j < N ; j ++ )
-                {
-                    answer[i][j]+= sup1[i][j];
-                    answer[i][j] %= MODLIMIT;
-                }
+                for ( int l = 0 ; l < N ; l++ )
+                    for ( int m = 0 ; m < N ; m++ )
+                    {
+                        answer[l][m] = sup1[l][m];
+                    }
             }
-
+            else
+            {
+                multiply(answer,sup1,ans2,N);
+                swap(ans2,answer);
+            }
         }
     }
+    printf("%llu\n",answer[s-1][t-1]);
+    delete [] sup1;
+    delete [] sup2;
+
 }
 
 
@@ -100,10 +126,8 @@ int main()
     {
         mat[i] = new long long int[N];
         mat2[i] = new long long int[N];
-    //    mat3[i] = new long long int[N];
         fill(mat[i],mat[i]+N,0);
-        fill(mat2[i],mat2[i]+N,0);
-    //    fill(mat3[i],mat3[i]+N,0);
+        fill(mat2[i],mat2[i]+N,1);
     }
     for ( int i = 0 ; i < M ; i++ )
     {
@@ -111,21 +135,8 @@ int main()
         a--;
         b--;
         mat[a][b] = 1;
-    //    mat2[a][b] = 1;
     }
-    //for( int i = 0 ; i < log2k ; i++)
-    //{
-    //    multiply(mat2,mat2,mat3,N);
-    //    swap(mat2,mat3);
-    //}
-    //printf("%d %d\n",(int) pow(2,log2k),k);
-    //for ( int i = ( int ) pow(2,log2k); i < k-1 ; i++)
-    //{
-    //    multiply(mat,mat2,mat3,N);
-    //    swap(mat2,mat3);
-    //}
-    solvem(mat,mat2,N,k);
-    printf("%lld\n",mat2[s-1][t-1]);
+    solvem(mat,mat2,N,k,s,t);
 
 
     return 0;
