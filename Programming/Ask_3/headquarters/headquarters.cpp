@@ -6,7 +6,7 @@
 
 * Creation Date : 29-01-2012
 
-* Last Modified : Thu 02 Feb 2012 01:39:27 AM EET
+* Last Modified : Thu 02 Feb 2012 01:58:56 AM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -49,8 +49,9 @@ int main()
     long long int **mat2;
     long long int **mat3;
     int log2k;
+    int nothing;
 
-    scanf("%d %d %d %d %d",&k,&N,&M,&s,&t);
+    nothing = scanf("%d %d %d %d %d",&k,&N,&M,&s,&t);
 
     log2k= (int) log2(k);
     mat = new long long int*[N];
@@ -68,7 +69,7 @@ int main()
     }
     for ( int i = 0 ; i < M ; i++ )
     {
-        scanf("%d %d",&a,&b);
+        nothing = scanf("%d %d",&a,&b);
         a--;
         b--;
         mat[a][b] = 1;
@@ -79,6 +80,7 @@ int main()
         multiply(mat2,mat2,mat3,N);
         swap(mat2,mat3);
     }
+    printf("%d %d\n",(int) pow(2,log2k),k);
     for ( int i = ( int ) pow(2,log2k); i < k-1 ; i++)
     {
         multiply(mat,mat2,mat3,N);
