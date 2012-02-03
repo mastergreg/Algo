@@ -6,7 +6,7 @@
 
 * Creation Date : 29-01-2012
 
-* Last Modified : Fri 03 Feb 2012 03:53:52 AM EET
+* Last Modified : Fri 03 Feb 2012 03:58:16 AM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -78,9 +78,9 @@ long long int kruskal(int **edges,int **parents,int V, int E)
 int get_max_cost(int i,int **parents)
 {
 }
-long long int snd_mst(int **edges,int **parents, int E)
+long int snd_mst(int **edges,int **parents, int E)
 {
-    unsigned long long int max_c,min_c;
+    unsigned long int max_c,min_c;
     max_c=0;
     min_c=-1;
     for ( int i = 1 ; i < E ; ++i )
@@ -94,7 +94,7 @@ long long int snd_mst(int **edges,int **parents, int E)
             min_c = min(min_c,edges[i][2] - max_c);
         }
     }
-    return (long long int) min_c;
+    return (long int) min_c;
 
 }
 int main()
@@ -129,9 +129,9 @@ int main()
     //run kruskal
     //calculate mst
     long long int mst = kruskal(edges,parents,V,E);
-    long long int smstdiff = snd_mst(edges,parents,E);
+    long int smstdiff = abs(snd_mst(edges,parents,E));
 
-    printf("%lld %lld\n",mst,mst+smstdiff);
+    printf("%lld %lld\n",mst,mst-smstdiff);
     
 
 
