@@ -1,5 +1,5 @@
 TARGET=carnival
-CCFLAGS=-Wall -Wextra -Wuninitialized -O3
+CCFLAGS=-Wall -Wextra -Wuninitialized -g
 all:	$(TARGET)
 $(TARGET):	$(TARGET).cpp
 	g++ $(TARGET).cpp -o $(TARGET) ${CCFLAGS}
