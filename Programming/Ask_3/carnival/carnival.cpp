@@ -6,7 +6,7 @@
 
 * Creation Date : 29-01-2012
 
-* Last Modified : Fri 03 Feb 2012 03:58:16 AM EET
+* Last Modified : Fri 03 Feb 2012 04:11:49 AM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -44,7 +44,6 @@ void unite(int x,int y,int cost,int **parents)
     }
     int k = find(y,parents);
     parents[k][0] = x;
-    //parents[y][1] = max(parents[y][1],cost);
     parents[k][1] = max(parents[k][1],cost);
     parents[x][1] = max(parents[x][1],cost);
 }
@@ -75,12 +74,9 @@ long long int kruskal(int **edges,int **parents,int V, int E)
     return cost;
 }
 
-int get_max_cost(int i,int **parents)
+long long int snd_mst(int **edges,int **parents, int E)
 {
-}
-long int snd_mst(int **edges,int **parents, int E)
-{
-    unsigned long int max_c,min_c;
+    unsigned long long int max_c,min_c;
     max_c=0;
     min_c=-1;
     for ( int i = 1 ; i < E ; ++i )
@@ -94,7 +90,7 @@ long int snd_mst(int **edges,int **parents, int E)
             min_c = min(min_c,edges[i][2] - max_c);
         }
     }
-    return (long int) min_c;
+    return (long long int) min_c;
 
 }
 int main()
@@ -102,13 +98,12 @@ int main()
 
     int V,E;
 
-
     scanf("%d %d\n",&V,&E);
     int **edges = new int*[E];
     int a,b,c;
     int **parents = new int*[V];
     //edges[i] = | n1 | n2 | w | used
-    //parents | father | size | cost? //
+    //parents | father | cost? //
     for( int i = 0 ; i < V ; ++i )
     {
         parents[i] = new int[2];
@@ -129,14 +124,8 @@ int main()
     //run kruskal
     //calculate mst
     long long int mst = kruskal(edges,parents,V,E);
-    long int smstdiff = abs(snd_mst(edges,parents,E));
+    long long int smstdiff = snd_mst(edges,parents,E);
 
-    printf("%lld %lld\n",mst,mst-smstdiff);
-    
-
-
-
-
-
+    printf("%lld %lld\n",mst,mst+smstdiff);
     return 0;
 }
