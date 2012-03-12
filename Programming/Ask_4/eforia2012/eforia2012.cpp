@@ -6,7 +6,7 @@
 
 *Creation Date : 12-03-2012
 
-* Last Modified : Mon 12 Mar 2012 05:29:40 PM EET
+* Last Modified : Mon 12 Mar 2012 05:46:56 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -17,39 +17,67 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 
 #include <queue>
 
+#define BSIZE 1<<15
+
+char buffer[BSIZE];
+long bpos = 0L, bsize = 0L;
+
+long readLong()
+{
+	long d = 0L, x = 0L;
+	char c;
+
+	while (1)  {
+		if (bpos >= bsize) {
+			bpos = 0;
+			if (feof(stdin)) return x;
+			bsize = fread(buffer, 1, BSIZE, stdin);
+		}
+		c = buffer[bpos++];
+		if (c >= '0' && c <= '9') { x = x*10 + (c-'0'); d = 1; }
+		else if (d == 1) return x;
+	}
+	return -1;
+}
+
 using namespace std;
 
 struct cmpare
 {
-    bool operator()(int *a, int *b){ return a[1] < b[1];}
+    bool operator()(long *a, long *b){ return a[1] < b[1];}
 };
-typedef priority_queue<int *,vector<int *>,cmpare> my_pr_q;
+typedef priority_queue<long *,vector<long *>,cmpare> my_pr_q;
 
-int shortest_path(int start, int stop, int nodes, my_pr_q* heaps);
+long shortest_path(long start, long stop, long nodes, my_pr_q* heaps);
 
 int main(void)
 {
-    int start;
-    int stop;
-    int cost;
-    int edges;
-    int *edge;
-    int nodes;
-    int i,j;
-    int wanted[2];
+    long start;
+    long stop;
+    long cost;
+    long edges;
+    long *edge;
+    long nodes;
+    long i,j;
+    long wanted[2];
     long long sum;
 
-    scanf( "%d %d", &nodes, &edges );
+    nodes = readLong();
+    edges = readLong();
+    //scanf( "%ld %ld", &nodes, &edges );
     //printf( "%d %d\n", nodes, edges );
     my_pr_q *heaps = new my_pr_q[nodes];
     for ( i = 0,sum=0 ; i < edges ; ++i )
     {
-        scanf( "%d %d %d", &start, &stop, &cost );
-        edge = new int[2];
+        start = readLong();
+        stop = readLong();
+        cost = readLong();
+        //scanf( "%d %d %d", &start, &stop, &cost );
+        edge = new long[2];
         edge[0] = stop;
         edge[1] = cost;
         heaps[start-1].push(edge);
-        edge = new int[2];
+        edge = new long[2];
         edge[0] = start;
         edge[1] = cost;
         heaps[stop-1].push(edge);
@@ -68,15 +96,15 @@ int main(void)
     return 0;
 }
 
-int shortest_path(int start, int stop, int nodes, my_pr_q* heaps)
+long shortest_path(long start, long stop, long nodes, my_pr_q* heaps)
 {
-    int *costs = new int[nodes]; 
+    long *costs = new long[nodes]; 
     fill(costs, costs+nodes,0);
-    int current = start;
-    int min_cost;
-    int next = start;
-    int *buf;
-    int total;
+    long current = start;
+    long min_cost;
+    long next = start;
+    long *buf;
+    long total;
 
     while( current != stop )
     {
