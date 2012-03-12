@@ -6,65 +6,65 @@
 
 *Creation Date : 12-03-2012
 
-* Last Modified : Mon 12 Mar 2012 05:46:56 PM EET
+* Last Modified : Mon 12 Mar 2012 17:51:00 EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
 _._._._._._._._._._._._._._._._._._._._._.*/
+
+#define BSIZE 1<<15
 
 #include <cstdio>
 #include <cstdlib>
 
 #include <queue>
 
-#define BSIZE 1<<15
+using namespace std;
+
+struct cmpare
+{
+    bool operator()(long int *a, long int *b){ return a[1] < b[1];}
+};
+typedef priority_queue<long int *,vector<long int *>,cmpare> my_pr_q;
+
+long int shortest_path(long int start, long int stop, long int nodes, my_pr_q* heaps);
 
 char buffer[BSIZE];
 long bpos = 0L, bsize = 0L;
 
 long readLong()
 {
-	long d = 0L, x = 0L;
-	char c;
+    long d = 0L, x = 0L;
+    char c;
 
-	while (1)  {
-		if (bpos >= bsize) {
-			bpos = 0;
-			if (feof(stdin)) return x;
-			bsize = fread(buffer, 1, BSIZE, stdin);
-		}
-		c = buffer[bpos++];
-		if (c >= '0' && c <= '9') { x = x*10 + (c-'0'); d = 1; }
-		else if (d == 1) return x;
-	}
-	return -1;
+    while (1)  {
+        if (bpos >= bsize) {
+            bpos = 0;
+            if (feof(stdin)) return x;
+            bsize = fread(buffer, 1, BSIZE, stdin);
+        }
+        c = buffer[bpos++];
+        if (c >= '0' && c <= '9') { x = x*10 + (c-'0'); d = 1; }
+        else if (d == 1) return x;
+    }
+    return -1;
 }
 
-using namespace std;
-
-struct cmpare
-{
-    bool operator()(long *a, long *b){ return a[1] < b[1];}
-};
-typedef priority_queue<long *,vector<long *>,cmpare> my_pr_q;
-
-long shortest_path(long start, long stop, long nodes, my_pr_q* heaps);
 
 int main(void)
 {
-    long start;
-    long stop;
-    long cost;
-    long edges;
-    long *edge;
-    long nodes;
-    long i,j;
-    long wanted[2];
+    long int start;
+    long int stop;
+    long int cost;
+    long int edges;
+    long int *edge;
+    long int nodes;
+    long int i,j;
+    long int wanted[2];
     long long sum;
 
     nodes = readLong();
     edges = readLong();
-    //scanf( "%ld %ld", &nodes, &edges );
     //printf( "%d %d\n", nodes, edges );
     my_pr_q *heaps = new my_pr_q[nodes];
     for ( i = 0,sum=0 ; i < edges ; ++i )
@@ -72,21 +72,20 @@ int main(void)
         start = readLong();
         stop = readLong();
         cost = readLong();
-        //scanf( "%d %d %d", &start, &stop, &cost );
-        edge = new long[2];
+        edge = new long int[2];
         edge[0] = stop;
         edge[1] = cost;
         heaps[start-1].push(edge);
-        edge = new long[2];
+        edge = new long int[2];
         edge[0] = start;
         edge[1] = cost;
         heaps[stop-1].push(edge);
         sum+=cost;
-        
+
     }
     for ( i = 0, j = 0 ; i < nodes ; ++i )
     {
-        if (heaps[i].size() % 2 == 1) 
+        if (heaps[i].size() % 2 == 1)
         {
             wanted[j++]=i+1;
         }
@@ -96,15 +95,15 @@ int main(void)
     return 0;
 }
 
-long shortest_path(long start, long stop, long nodes, my_pr_q* heaps)
+long int shortest_path(long int start, long int stop, long int nodes, my_pr_q* heaps)
 {
-    long *costs = new long[nodes]; 
+    long int *costs = new long int[nodes];
     fill(costs, costs+nodes,0);
-    long current = start;
-    long min_cost;
-    long next = start;
-    long *buf;
-    long total;
+    long int current = start;
+    long int min_cost;
+    long int next = start;
+    long int *buf;
+    long int total;
 
     while( current != stop )
     {
