@@ -6,23 +6,25 @@
 
 * Creation Date : 12-03-2012
 
-* Last Modified : Tue 13 Mar 2012 01:05:30 AM EET
+* Last Modified : Tue 13 Mar 2012 01:48:43 AM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
 _._._._._._._._._._._._._._._._._._._._._.*/
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "heap.h"
-
-void makeNode(long int vertex, long int cost)
+static
+node * makeNode(long int vertex, long int cost)
 {
     node *nd = (node *) malloc(sizeof(node));
     nd->vertex = vertex;
     nd->cost = cost;
     return nd;
 }
-void copyNode(nd1)
+static
+node * copyNode(node *nd1)
 {
     node *nd = (node *) malloc(sizeof(node));
     nd->vertex = nd1->vertex;
@@ -30,54 +32,61 @@ void copyNode(nd1)
     return nd;
 }
 
-int compareNode(node *n1, node *n2)
+static
+int compareNode(const node *n1, const node *n2)
 {
     // set < if you want max heap
     return n1->cost > n2->cost;
 }
 
+static
 void swapNode(node *n1, node *n2)
 {
-    node * buf = n1;
-    n1 = n2;
-    n2 = buf;
+    long int buf = n1->vertex;
+    n1->vertex = n2->vertex;
+    n2->vertex = buf;
+    buf = n1->cost;
+    n1->cost = n2->cost;
+    n2->cost = buf;
 }
+static
 void printNode(node *nd)
 {
-    printf("dest: %ld, cost: %ld\n");
+    printf("dest: %ld, cost: %ld\n",nd->vertex,nd->cost);
 }
 
 
-heap *init(int vertex,int cost)
+heap *init(long int vertex,long int cost)
 {
     heap *hp = (heap *) malloc( sizeof(heap) );
-    alloc_size = 100;
-    hp->head = (node **) malloc(alloc_size*sizeof(node *);
+    hp->alloc_size = 100;
+    hp->head = (node **) malloc((hp->alloc_size)*sizeof(node *));
     hp->head[0]=makeNode(vertex,cost);
     hp->size = 1;
     return hp;
 }
 void fixDown(heap *hp,long int size)
 {
-    switch(size):
-        case 1:
-        {
+    switch(size)
+    {
+        case 0:
             return;
-        }
+        case 1:
+            return;
         case 2:
         {
             if( compareNode(hp->head[0],hp->head[1]) )
             {
                 swapNode(hp->head[0],hp->head[1]);
-                return;
             }
+            return;
         }
         default:
-            //use > if max heap
+        {
             int i = 0;
             long int lchild = 1;
             long int rchild = 2;
-            long int child = compareNode(hp->head[lchild], hp->head[rchild]) ? lchild : rchild;
+            long int child = compareNode(hp->head[lchild], hp->head[rchild]) ? rchild : lchild;
             while( compareNode(hp->head[i],hp->head[child]) )
             {
                 swapNode(hp->head[i],hp->head[child]);
@@ -85,7 +94,7 @@ void fixDown(heap *hp,long int size)
                 rchild = 2*i+2;
                 if (rchild < size )
                 {
-                    child = compareNode(hp->head[lchild], hp->head[rchild]) ? lchild : rchild;
+                    child = compareNode(hp->head[lchild], hp->head[rchild]) ? rchild : lchild;
                 }
                 else if ( lchild < size )
                 {
@@ -95,8 +104,10 @@ void fixDown(heap *hp,long int size)
                 {
                     return;
                 }
+                i++;
             }
-
+        }
+    }
 
 }
 void fixUp(heap *hp,long int size)
@@ -110,7 +121,7 @@ void fixUp(heap *hp,long int size)
     {
         father = (size-1)/2;
     }
-    while( compareNode(hp->head[father],hp->head[size] ) && size != 0 )
+    while( father >= 0 && compareNode(hp->head[father],hp->head[size] ) )
     {
         swapNode(hp->head[father],hp->head[size]);
         size=father;
@@ -127,16 +138,16 @@ void fixUp(heap *hp,long int size)
 
 void push(heap *hp,long int vertex, long int cost)
 {
-    if(hp->size == alloc_size)
+    if(hp->size == hp->alloc_size)
     {
-        alloc_size+=100;
-        hp->heap = (node **) realloc(hp->heap,alloc_size);
+        hp->alloc_size+=100;
+        hp->head = (node **) realloc(hp->head,hp->alloc_size);
     }
-    hp->head[size] = makeNode(vertex,cost);
-    fixUp(hp,size);
+    hp->head[hp->size] = makeNode(vertex,cost);
+    fixUp(hp,hp->size);
     hp->size++;
 }
-long int size(head *hp)
+long int size(heap *hp)
 {
     return hp->size;
 }
@@ -144,9 +155,9 @@ node *pop(heap *hp)
 {
     node *nd = copyNode(hp->head[0]);
     free(hp->head[0]);
-    hp->head[0] = hp->head[size-1];
     hp->size--;
-    fixDown(hp,size);
+    hp->head[0] = hp->head[hp->size];
+    fixDown(hp,hp->size);
     return nd;
 }
 void print(heap *mh)
@@ -154,6 +165,6 @@ void print(heap *mh)
     int i;
     for( i = 0 ; i < mh->size ; ++i )
     {
-        printNode(mp->head[i]);
+        printNode(mh->head[i]);
     }
 }
