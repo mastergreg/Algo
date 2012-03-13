@@ -6,7 +6,7 @@
 
 * Creation Date : 12-03-2012
 
-* Last Modified : Tue 13 Mar 2012 01:48:43 AM EET
+* Last Modified : Tue 13 Mar 2012 01:59:19 AM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -55,16 +55,7 @@ void printNode(node *nd)
     printf("dest: %ld, cost: %ld\n",nd->vertex,nd->cost);
 }
 
-
-heap *init(long int vertex,long int cost)
-{
-    heap *hp = (heap *) malloc( sizeof(heap) );
-    hp->alloc_size = 100;
-    hp->head = (node **) malloc((hp->alloc_size)*sizeof(node *));
-    hp->head[0]=makeNode(vertex,cost);
-    hp->size = 1;
-    return hp;
-}
+static
 void fixDown(heap *hp,long int size)
 {
     switch(size)
@@ -110,6 +101,7 @@ void fixDown(heap *hp,long int size)
     }
 
 }
+static
 void fixUp(heap *hp,long int size)
 {
     long int father;
@@ -136,6 +128,16 @@ void fixUp(heap *hp,long int size)
     }
 }
 
+
+heap *init(long int vertex,long int cost)
+{
+    heap *hp = (heap *) malloc( sizeof(heap) );
+    hp->alloc_size = 100;
+    hp->head = (node **) malloc((hp->alloc_size)*sizeof(node *));
+    hp->head[0]=makeNode(vertex,cost);
+    hp->size = 1;
+    return hp;
+}
 void push(heap *hp,long int vertex, long int cost)
 {
     if(hp->size == hp->alloc_size)
